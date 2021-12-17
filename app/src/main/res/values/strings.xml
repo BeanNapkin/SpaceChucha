@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SpaceChucha</string>
+    <string name="photo_of_the_day_stub">Picture of the day</string>
 </resources>
