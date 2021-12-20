@@ -3,4 +3,8 @@
     <string name="photo_of_the_day_stub">Picture of the day</string>
     <string name="search_wiki">Поиск</string>
     <string name="wiki_helper_text">Поиск в Википедии</string>
+    <string name="settings">Настройки</string>
+    <string name="favourite">Избранное</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

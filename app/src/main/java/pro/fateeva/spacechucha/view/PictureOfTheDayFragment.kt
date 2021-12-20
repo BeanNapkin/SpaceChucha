@@ -4,11 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
@@ -16,8 +14,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.description_bottomsheet_fragment.view.*
 import kotlinx.android.synthetic.main.picture_of_the_day_fragment.*
+import pro.fateeva.spacechucha.MainActivity
 import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.PictureOfTheDayFragmentBinding
+import pro.fateeva.spacechucha.viewmodel.BottomDrawerFragment
 import pro.fateeva.spacechucha.viewmodel.PictureOfTheDayState
 import pro.fateeva.spacechucha.viewmodel.PictureOfTheDayViewModel
 
@@ -48,12 +48,38 @@ class PictureOfTheDayFragment : Fragment() {
             renderData(it)
         })
 
-        val behavior = BottomSheetBehavior.from(binding.bottomSheetDescription.bottomSheetContainer)
-        behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        setBottomAppBar(view)
+
+        setBottomSheetBehavior()
 
         addWikiSearch()
 
         refresh()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.main_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.favourite -> Toast.makeText(context, "Favourite", Toast.LENGTH_SHORT).show()
+            R.id.settings -> Toast.makeText(context, "Settings", Toast.LENGTH_SHORT).show()
+            android.R.id.home -> {
+                activity?.let {
+                    BottomDrawerFragment().show(it.supportFragmentManager, "tag")
+                }
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setBottomAppBar(view: View) {
+        val context = activity as MainActivity
+        context.setSupportActionBar(binding.bottomAppBar)
+        setHasOptionsMenu(true)
     }
 
     private fun renderData(state: PictureOfTheDayState) {
@@ -77,7 +103,7 @@ class PictureOfTheDayFragment : Fragment() {
                 binding.imageView.load(url) {
                     lifecycle(this@PictureOfTheDayFragment)
                     error(R.drawable.ic_baseline_error)
-                    placeholder(R.drawable.ic_baseline_no_image)
+                    placeholder(R.drawable.ic_no_image)
                 }
                 binding.bottomSheetDescription.header.text = state.pictureOfTheDayResponseData.title
                 binding.bottomSheetDescription.description.text =
@@ -93,6 +119,11 @@ class PictureOfTheDayFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun setBottomSheetBehavior(){
+        val behavior = BottomSheetBehavior.from(binding.bottomSheetDescription.bottomSheetContainer)
+        behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
     }
 
     private fun addWikiSearch() {
