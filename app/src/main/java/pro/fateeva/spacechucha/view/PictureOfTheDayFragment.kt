@@ -1,5 +1,7 @@
 package pro.fateeva.spacechucha.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,6 +15,7 @@ import coil.load
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.description_bottomsheet_fragment.view.*
+import kotlinx.android.synthetic.main.picture_of_the_day_fragment.*
 import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.PictureOfTheDayFragmentBinding
 import pro.fateeva.spacechucha.viewmodel.PictureOfTheDayState
@@ -48,6 +51,8 @@ class PictureOfTheDayFragment : Fragment() {
         val behavior = BottomSheetBehavior.from(binding.bottomSheetDescription.bottomSheetContainer)
         behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
 
+        addWikiSearch()
+
         refresh()
     }
 
@@ -75,18 +80,27 @@ class PictureOfTheDayFragment : Fragment() {
                     placeholder(R.drawable.ic_baseline_no_image)
                 }
                 binding.bottomSheetDescription.header.text = state.pictureOfTheDayResponseData.title
-                binding.bottomSheetDescription.description.text = state.pictureOfTheDayResponseData.explanation
+                binding.bottomSheetDescription.description.text =
+                    state.pictureOfTheDayResponseData.explanation
             }
         }
     }
 
-    private fun refresh(){
+    private fun refresh() {
         viewModel.getImageOfTheDay()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun addWikiSearch() {
+        inputLayout.setEndIconOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("https://en.wikipedia.org/wiki/${inputEditText.text.toString()}")
+            })
+        }
     }
 
     companion object {

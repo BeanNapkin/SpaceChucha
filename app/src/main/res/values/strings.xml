@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">SpaceChucha</string>
     <string name="photo_of_the_day_stub">Picture of the day</string>
+    <string name="search_wiki">Поиск</string>
+    <string name="wiki_helper_text">Поиск в Википедии</string>
 </resources>
