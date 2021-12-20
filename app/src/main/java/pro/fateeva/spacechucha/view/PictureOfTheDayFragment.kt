@@ -6,10 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.description_bottomsheet_fragment.view.*
 import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.PictureOfTheDayFragmentBinding
 import pro.fateeva.spacechucha.viewmodel.PictureOfTheDayState
@@ -41,6 +44,10 @@ class PictureOfTheDayFragment : Fragment() {
         viewModel.getData().observe(viewLifecycleOwner, Observer {
             renderData(it)
         })
+
+        val behavior = BottomSheetBehavior.from(binding.bottomSheetDescription.bottomSheetContainer)
+        behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+
         refresh()
     }
 
@@ -67,6 +74,8 @@ class PictureOfTheDayFragment : Fragment() {
                     error(R.drawable.ic_baseline_error)
                     placeholder(R.drawable.ic_baseline_no_image)
                 }
+                binding.bottomSheetDescription.header.text = state.pictureOfTheDayResponseData.title
+                binding.bottomSheetDescription.description.text = state.pictureOfTheDayResponseData.explanation
             }
         }
     }

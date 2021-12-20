@@ -24,12 +24,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <include layout="@layout/description_bottomsheet_fragment"
+        android:id="@+id/bottomSheetDescription" />
+
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
