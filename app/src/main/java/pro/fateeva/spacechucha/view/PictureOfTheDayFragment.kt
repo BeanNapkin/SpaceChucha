@@ -64,17 +64,7 @@ class PictureOfTheDayFragment : Fragment() {
 
         addWikiSearch()
 
-//        refresh(takeDate(0))
-
-
-        binding.dayChipGroup.setOnCheckedChangeListener { group, checkedId ->
-            when(checkedId){
-                R.id.today -> refresh(takeDate(0))
-                R.id.yesterday -> refresh(takeDate(-1))
-                R.id.dayBeforeYesterday -> refresh(takeDate(-2))
-            }
-        }
-        binding.dayChipGroup.check(R.id.today)
+        initChips()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -94,6 +84,17 @@ class PictureOfTheDayFragment : Fragment() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun initChips(){
+        binding.dayChipGroup.setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId){
+                R.id.today -> refresh(takeDate(0))
+                R.id.yesterday -> refresh(takeDate(-1))
+                R.id.dayBeforeYesterday -> refresh(takeDate(-2))
+            }
+        }
+        binding.dayChipGroup.check(R.id.today)
     }
 
     private fun setBottomAppBar(view: View) {
@@ -179,5 +180,4 @@ class PictureOfTheDayFragment : Fragment() {
         var isMain = true
         fun newInstance() = PictureOfTheDayFragment()
     }
-
 }
