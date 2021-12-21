@@ -88,7 +88,7 @@ class PictureOfTheDayFragment : Fragment() {
         val context = activity as MainActivity
         context.setSupportActionBar(binding.bottomAppBar)
         setHasOptionsMenu(true)
-        
+
         fab.setOnClickListener {
             if (isMain) {
                 isMain = false
@@ -106,8 +106,7 @@ class PictureOfTheDayFragment : Fragment() {
             }
         }
     }
-
-
+    
     private fun renderData(state: PictureOfTheDayState) {
         when (state) {
             is PictureOfTheDayState.Error -> {
