@@ -23,6 +23,8 @@ import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.PictureOfTheDayFragmentBinding
 import pro.fateeva.spacechucha.viewmodel.PictureOfTheDayState
 import pro.fateeva.spacechucha.viewmodel.PictureOfTheDayViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PictureOfTheDayFragment : Fragment() {
 
@@ -62,7 +64,17 @@ class PictureOfTheDayFragment : Fragment() {
 
         addWikiSearch()
 
-        refresh()
+//        refresh(takeDate(0))
+
+
+        binding.dayChipGroup.setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId){
+                R.id.today -> refresh(takeDate(0))
+                R.id.yesterday -> refresh(takeDate(-1))
+                R.id.dayBeforeYesterday -> refresh(takeDate(-2))
+            }
+        }
+        binding.dayChipGroup.check(R.id.today)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -106,7 +118,7 @@ class PictureOfTheDayFragment : Fragment() {
             }
         }
     }
-    
+
     private fun renderData(state: PictureOfTheDayState) {
         when (state) {
             is PictureOfTheDayState.Error -> {
@@ -114,7 +126,7 @@ class PictureOfTheDayFragment : Fragment() {
                 Log.e(null, "Ошибка при скачке изображения", state.error)
                 Snackbar.make(binding.root, "error ", Snackbar.LENGTH_SHORT)
                     .setAction("Retry") {
-                        refresh()
+                        refresh(takeDate(0))
                     }
                     .show()
             }
@@ -137,8 +149,16 @@ class PictureOfTheDayFragment : Fragment() {
         }
     }
 
-    private fun refresh() {
-        viewModel.getImageOfTheDay()
+    private fun refresh(date: String) {
+        viewModel.getImageOfTheDay(date)
+    }
+
+    private fun takeDate(count: Int): String {
+        val currentDate = Calendar.getInstance()
+        currentDate.add(Calendar.DAY_OF_MONTH, count)
+        val format1 = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        format1.timeZone = TimeZone.getTimeZone("EST")
+        return format1.format(currentDate.time)
     }
 
     private fun setBottomSheetBehavior(){

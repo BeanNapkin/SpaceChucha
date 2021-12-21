@@ -21,13 +21,13 @@ class PictureOfTheDayViewModel (
         return liveDataForViewToObserve
     }
 
-    fun getImageOfTheDay() {
+    fun getImageOfTheDay(date: String) {
         liveDataForViewToObserve.value = PictureOfTheDayState.Loading(0)
         val apiKey: String = BuildConfig.NASA_API_KEY
         if (apiKey.isBlank()) {
             liveDataForViewToObserve.value = PictureOfTheDayState.Error(Throwable("wrong key"))
         } else {
-            retrofitImpl.getRetrofitImpl().getPictureOfTheDay(apiKey).enqueue(callback)
+            retrofitImpl.getRetrofitImpl().getPictureOfTheDay(apiKey, date).enqueue(callback)
         }
     }
 
