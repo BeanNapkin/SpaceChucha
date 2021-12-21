@@ -1,4 +1,4 @@
-package pro.fateeva.spacechucha.viewmodel
+package pro.fateeva.spacechucha.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
