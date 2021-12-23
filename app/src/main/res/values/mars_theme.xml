@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MarsTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorRed</item>
+        <item name="colorPrimaryDark">@color/colorDarkRed</item>
+        <item name="colorAccent">@color/colorBlack</item>
+        <item name="colorSecondary">@color/colorOrange</item>
+        <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar.Colored</item>
+        <item name="h1Text">@style/H1Mars</item>
+        <item name="floatingActionButtonStyle">@style/FloatingButtonMars</item>
+    </style>
+
+    <style name="H1Mars">
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="FloatingButtonMars" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="tint">@color/colorWhite</item>
+    </style>
+</resources>
