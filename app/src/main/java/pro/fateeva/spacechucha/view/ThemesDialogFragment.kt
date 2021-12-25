@@ -32,6 +32,8 @@ class ThemesDialogFragment : DialogFragment() {
         const val TAG = "ThemesDialogFragment"
         const val THEME = "Theme"
         const val THEME_NAME = "Theme name"
+        const val MOON = "moon"
+        const val MARS = "mars"
         fun newInstance(): DialogFragment = ThemesDialogFragment()
     }
 
@@ -51,14 +53,14 @@ class ThemesDialogFragment : DialogFragment() {
         val themeFromPref: String? = prefs.getString(THEME_NAME, null)
 
         when(themeFromPref){
-            "moon" -> binding.moon.isChecked = true
-            "mars", null -> binding.mars.isChecked = false
+            MOON -> binding.moon.isChecked = true
+            MARS, null -> binding.mars.isChecked = false
         }
 
         binding.choseThemeRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
             when (i) {
-                R.id.mars -> theme = "mars"
-                R.id.moon -> theme = "moon"
+                R.id.mars -> theme = MOON
+                R.id.moon -> theme = MARS
             }
         }
 

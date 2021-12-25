@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import pro.fateeva.spacechucha.view.PictureOfTheDayFragment
 import pro.fateeva.spacechucha.view.ThemesDialogFragment
+import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.MARS
+import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.MOON
 import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.THEME
 import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.THEME_NAME
 
@@ -17,8 +19,8 @@ class MainActivity : AppCompatActivity() {
         val theme: String = prefs.getString(THEME_NAME, null).toString()
 
         when(theme){
-            "mars" -> setTheme(R.style.MarsTheme)
-            "moon" -> setTheme(R.style.MoonTheme)
+            MARS -> setTheme(R.style.MarsTheme)
+            MOON -> setTheme(R.style.MoonTheme)
         }
 
         supportFragmentManager.beginTransaction()
