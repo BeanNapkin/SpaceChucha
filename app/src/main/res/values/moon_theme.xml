@@ -9,6 +9,8 @@
         <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar.Colored</item>
         <item name="h1Text">@style/H1Moon</item>
         <item name="floatingActionButtonStyle">@style/FloatingButtonMoon</item>
+        <item name="fontFamily">@font/zarubka</item>
+        <item name="android:fontFamily">@font/zarubka</item>
     </style>
 
     <style name="H1Moon">

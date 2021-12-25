@@ -9,6 +9,8 @@
         <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar.Colored</item>
         <item name="h1Text">@style/H1Mars</item>
         <item name="floatingActionButtonStyle">@style/FloatingButtonMars</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="H1Mars">
