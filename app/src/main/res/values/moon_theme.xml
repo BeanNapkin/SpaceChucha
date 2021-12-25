@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MoonTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorLightBlue</item>
+        <item name="colorPrimaryDark">@color/colorDarkBlue</item>
+        <item name="colorAccent">@color/colorBlack</item>
+        <item name="colorSecondary">@color/colorYellow</item>
+        <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar.Colored</item>
+        <item name="h1Text">@style/H1Moon</item>
+        <item name="floatingActionButtonStyle">@style/FloatingButtonMoon</item>
+    </style>
+
+    <style name="H1Moon">
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="FloatingButtonMoon" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="tint">@color/colorBlack</item>
+    </style>
+
+</resources>

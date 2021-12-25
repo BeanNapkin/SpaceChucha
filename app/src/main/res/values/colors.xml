@@ -10,5 +10,9 @@
     <color name="colorOrange">#ff6f00</color>
     <color name="colorBlack">#000000</color>
     <color name="colorBottomSheetLine">#989898</color>
+    <color name="colorLightBlue">#90a4ae</color>
+    <color name="colorDarkBlue">#62757f</color>
+    <color name="colorYellow">#ffee58</color>
+
 
 </resources>
