@@ -1,27 +1,21 @@
 package pro.fateeva.spacechucha.view
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.description_bottomsheet_fragment.view.*
 import kotlinx.android.synthetic.main.picture_of_the_day_fragment.*
-import pro.fateeva.spacechucha.MainActivity
 import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.PictureOfTheDayFragmentBinding
-import pro.fateeva.spacechucha.viewmodel.PictureOfTheDayState
+import pro.fateeva.spacechucha.viewmodel.AppState
 import pro.fateeva.spacechucha.viewmodel.PictureOfTheDayViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -123,9 +117,9 @@ class PictureOfTheDayFragment : Fragment() {
 //        }
 //    }
 
-    private fun renderData(state: PictureOfTheDayState) {
+    private fun renderData(state: AppState) {
         when (state) {
-            is PictureOfTheDayState.Error -> {
+            is AppState.Error -> {
                 binding.progressBar.visibility = View.GONE
                 Log.e(null, "Ошибка при скачке изображения", state.error)
                 Snackbar.make(binding.root, "error ", Snackbar.LENGTH_SHORT)
@@ -134,10 +128,10 @@ class PictureOfTheDayFragment : Fragment() {
                     }
                     .show()
             }
-            is PictureOfTheDayState.Loading -> {
+            is AppState.Loading -> {
                 binding.progressBar.visibility = View.VISIBLE
             }
-            is PictureOfTheDayState.Success -> {
+            is AppState.SuccessPictureOfTheDay -> {
                 binding.progressBar.visibility = View.GONE
                 val pictureOfTheDayResponseData = state.pictureOfTheDayResponseData
                 val url = pictureOfTheDayResponseData.url
@@ -180,7 +174,7 @@ class PictureOfTheDayFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        var isMain = true
+//        var isMain = true
         fun newInstance() = PictureOfTheDayFragment()
     }
 }

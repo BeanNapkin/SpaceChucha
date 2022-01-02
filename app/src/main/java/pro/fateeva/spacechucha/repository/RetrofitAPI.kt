@@ -4,7 +4,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface PictureOfTheDayAPI {
+interface RetrofitAPI {
 
     @GET("planetary/apod")
     fun getPictureOfTheDay(@Query("api_key") apiKey: String): Call<PictureOfTheDayResponseData>
@@ -12,4 +12,11 @@ interface PictureOfTheDayAPI {
     @GET("planetary/apod")
     fun getPictureOfTheDay(@Query("api_key") apiKey:String, @Query("date") date:String):Call<PictureOfTheDayResponseData>
 
+    @GET("EPIC/api/natural")
+    fun getEPIC(@Query("api_key") apiKey: String): Call<List<EarthEpicServerResponseData>>
+
+    fun getMarsImageByDate(
+        @Query("earth_date") earth_date: String,
+        @Query("api_key") apiKey: String,
+    ): Call<MarsPhotosServerResponseData>
 }
