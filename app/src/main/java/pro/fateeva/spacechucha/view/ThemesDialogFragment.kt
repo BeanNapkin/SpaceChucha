@@ -54,7 +54,7 @@ class ThemesDialogFragment : DialogFragment() {
 
         when(themeFromPref){
             MOON -> binding.moon.isChecked = true
-            MARS, null -> binding.mars.isChecked = false
+            MARS, null -> binding.mars.isChecked = true
         }
 
         binding.choseThemeRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
