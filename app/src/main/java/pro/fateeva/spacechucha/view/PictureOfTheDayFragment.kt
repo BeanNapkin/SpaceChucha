@@ -58,7 +58,7 @@ class PictureOfTheDayFragment : Fragment() {
             renderData(it)
         })
 
-        setBottomAppBar(view)
+//        setBottomAppBar(view)
 
         setBottomSheetBehavior()
 
@@ -73,18 +73,18 @@ class PictureOfTheDayFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.favourite -> Toast.makeText(context, "Favourite", Toast.LENGTH_SHORT).show()
-            R.id.settings -> requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.container, SettingsFragment.newInstance())
-                .addToBackStack(null)
-                .commit()
-            android.R.id.home -> {
-                activity?.let {
-                    BottomDrawerFragment().show(it.supportFragmentManager, "tag")
-                }
-            }
-        }
+//        when (item.itemId) {
+//            R.id.favourite -> Toast.makeText(context, "Favourite", Toast.LENGTH_SHORT).show()
+//            R.id.settings -> requireActivity().supportFragmentManager.beginTransaction()
+//                .replace(R.id.container, SettingsFragment.newInstance())
+//                .addToBackStack(null)
+//                .commit()
+//            android.R.id.home -> {
+//                activity?.let {
+//                    BottomDrawerFragment().show(it.supportFragmentManager, "tag")
+//                }
+//            }
+//        }
 
         return super.onOptionsItemSelected(item)
     }
@@ -100,28 +100,28 @@ class PictureOfTheDayFragment : Fragment() {
         binding.dayChipGroup.check(R.id.today)
     }
 
-    private fun setBottomAppBar(view: View) {
-        val context = activity as MainActivity
-        context.setSupportActionBar(binding.bottomAppBar)
-        setHasOptionsMenu(true)
-
-        fab.setOnClickListener {
-            if (isMain) {
-                isMain = false
-                binding.bottomAppBar.navigationIcon = null
-                binding.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
-                binding.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_arrow_back))
-                binding.bottomAppBar.replaceMenu(R.menu.other_menu)
-            } else {
-                isMain = true
-                binding.bottomAppBar.navigationIcon =
-                    ContextCompat.getDrawable(context, R.drawable.ic_menu_hamburger)
-                binding.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
-                fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_fab_add))
-                binding.bottomAppBar.replaceMenu(R.menu.main_menu)
-            }
-        }
-    }
+//    private fun setBottomAppBar(view: View) {
+//        val context = activity as MainActivity
+//        context.setSupportActionBar(binding.bottomAppBar)
+//        setHasOptionsMenu(true)
+//
+//        fab.setOnClickListener {
+//            if (isMain) {
+//                isMain = false
+//                binding.bottomAppBar.navigationIcon = null
+//                binding.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
+//                binding.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_arrow_back))
+//                binding.bottomAppBar.replaceMenu(R.menu.other_menu)
+//            } else {
+//                isMain = true
+//                binding.bottomAppBar.navigationIcon =
+//                    ContextCompat.getDrawable(context, R.drawable.ic_menu_hamburger)
+//                binding.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
+//                fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_fab_add))
+//                binding.bottomAppBar.replaceMenu(R.menu.main_menu)
+//            }
+//        }
+//    }
 
     private fun renderData(state: PictureOfTheDayState) {
         when (state) {
