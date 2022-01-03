@@ -18,4 +18,5 @@
     <string name="choose_theme">Выберите тему</string>
     <string name="picture_of_the_day">Фото дня</string>
     <string name="earth">Земля</string>
+    <string name="change_date">Поменять дату</string>
 </resources>

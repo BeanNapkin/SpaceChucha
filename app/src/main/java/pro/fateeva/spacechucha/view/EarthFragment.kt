@@ -53,10 +53,14 @@ class EarthFragment : Fragment() {
             renderData(it)
         })
 
-        initDatePicker()
+        showDatePicker()
+
+        binding.changeDateButton.setOnClickListener {
+            showDatePicker()
+        }
     }
 
-    private fun initDatePicker(){
+    private fun showDatePicker(){
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Выберите дату")
@@ -66,6 +70,7 @@ class EarthFragment : Fragment() {
 
         datePicker.addOnPositiveButtonClickListener {
             date = convertLongToString(it)
+            binding.dateTextView.setText(date)
             refresh(date)
         }
     }
