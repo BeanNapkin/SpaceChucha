@@ -22,20 +22,19 @@
             android:id="@+id/changeDateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/change_date"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@string/change_date"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <pro.fateeva.spacechucha.utils.CustomImageView
             android:id="@+id/marsImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:contentDescription="@string/mars"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/changeDateButton"
             app:srcCompat="@drawable/ic_no_image" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -43,25 +42,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Погода:  "
+            android:text="Последние данные о температуре на Марсе:"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/marsImageView" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/countAsteroidsTextView"
+            android:id="@+id/minTempTextView"
             android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/textView"
-            app:layout_constraintTop_toBottomOf="@id/marsImageView"/>
+            android:layout_marginTop="10dp"
+            android:text="-60"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/maxTempTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="-20"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/minTempTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

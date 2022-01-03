@@ -11,14 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
-import pro.fateeva.spacechucha.BuildConfig
 import pro.fateeva.spacechucha.R
-import pro.fateeva.spacechucha.databinding.EarthFragmentBinding
 import pro.fateeva.spacechucha.databinding.MarsFragmentBinding
-import pro.fateeva.spacechucha.repository.AsteroidsResponseData
-import pro.fateeva.spacechucha.repository.EarthEpicServerResponseData
 import pro.fateeva.spacechucha.repository.MarsPhotosServerResponseData
-import pro.fateeva.spacechucha.viewmodel.EarthViewModel
+import pro.fateeva.spacechucha.repository.MarsTempServerResponseData
 import pro.fateeva.spacechucha.viewmodel.LoadableData
 import pro.fateeva.spacechucha.viewmodel.MarsViewModel
 import java.text.SimpleDateFormat
@@ -57,6 +53,9 @@ class MarsFragment : Fragment() {
 
         viewModel.getMarsPhotosData().observe(viewLifecycleOwner, Observer {
             renderMarsPhoto(it)
+        })
+        viewModel.getMarsWeatherData().observe(viewLifecycleOwner, Observer {
+            renderMarsWeather(it)
         })
 
         showDatePicker()
@@ -104,7 +103,8 @@ class MarsFragment : Fragment() {
             is LoadableData.Success -> {
                 val marsPhotosServerResponseData = state.data.photos
                 if (marsPhotosServerResponseData.isEmpty()) {
-                    Snackbar.make(binding.root, "Нет фото для этой даты", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, "Нет фото для этой даты", Snackbar.LENGTH_SHORT)
+                        .show()
                 } else {
                     val image = marsPhotosServerResponseData.last().image
                     binding.marsImageView.load(image) {
@@ -118,8 +118,31 @@ class MarsFragment : Fragment() {
         }
     }
 
+    private fun renderMarsWeather(state: LoadableData<MarsTempServerResponseData>) {
+        when (state) {
+            is LoadableData.Error -> {
+                binding.progressBar.visibility = View.GONE
+                Log.e("WeatherLoading", "Ошибка при скачке погоды", state.error)
+                Snackbar.make(binding.root, "error ", Snackbar.LENGTH_SHORT)
+                    .setAction("Retry") {
+                        refresh(date)
+                    }
+                    .show()
+            }
+            is LoadableData.Loading -> {
+                binding.minTempTextView.setText("loading...")
+                binding.maxTempTextView.setText("loading...")
+            }
+            is LoadableData.Success -> {
+                val weatherServerResponseData = state.data
+                binding.minTempTextView.setText("Минимальная температура °F: " + weatherServerResponseData.min)
+                binding.maxTempTextView.setText("Максимальная температура °F: " + weatherServerResponseData.max)
+            }
+        }
+    }
+
     private fun refresh(date: String) {
-        viewModel.getMarsPhotos(date)
+        viewModel.getMarsPhotosAndWeather(date)
     }
 
     companion object {
