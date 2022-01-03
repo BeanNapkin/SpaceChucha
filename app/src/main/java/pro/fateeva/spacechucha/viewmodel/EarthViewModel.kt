@@ -21,13 +21,13 @@ class EarthViewModel(
         return liveDataForViewToObserve
     }
 
-    fun getEarthEpic() {
+    fun getEarthEpic(date: String) {
         liveDataForViewToObserve.value = AppState.Loading(0)
         val apiKey: String = BuildConfig.NASA_API_KEY
         if (apiKey.isBlank()) {
             liveDataForViewToObserve.value = AppState.Error(Throwable("wrong key"))
         } else {
-            retrofitImpl.getRetrofitImpl().getEPIC(apiKey).enqueue(callback)
+            retrofitImpl.getRetrofitImpl().getEPICByDate(date, apiKey).enqueue(callback)
         }
     }
 

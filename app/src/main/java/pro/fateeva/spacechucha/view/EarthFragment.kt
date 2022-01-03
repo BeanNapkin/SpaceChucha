@@ -9,14 +9,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import pro.fateeva.spacechucha.BuildConfig
 import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.EarthFragmentBinding
 import pro.fateeva.spacechucha.viewmodel.AppState
 import pro.fateeva.spacechucha.viewmodel.EarthViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EarthFragment : Fragment() {
+
+    lateinit var date: String
 
     private var _binding: EarthFragmentBinding? = null
     val binding: EarthFragmentBinding
@@ -48,17 +53,37 @@ class EarthFragment : Fragment() {
             renderData(it)
         })
 
-        refresh()
+        initDatePicker()
+    }
+
+    private fun initDatePicker(){
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Выберите дату")
+                .build()
+
+        datePicker.show(requireActivity().supportFragmentManager, "tag")
+
+        datePicker.addOnPositiveButtonClickListener {
+            date = convertLongToString(it)
+            refresh(date)
+        }
+    }
+
+    private fun convertLongToString(dateLong: Long): String {
+        val date = Date(dateLong)
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        return format.format(date)
     }
 
     private fun renderData(state: AppState) {
         when (state) {
             is AppState.Error -> {
                 binding.progressBar.visibility = View.GONE
-                Log.e(null, "Ошибка при скачке изображения", state.error)
+                Log.e("ImageLoading", "Ошибка при скачке изображения", state.error)
                 Snackbar.make(binding.root, "error ", Snackbar.LENGTH_SHORT)
                     .setAction("Retry") {
-                        refresh()
+                        refresh(date)
                     }
                     .show()
             }
@@ -84,8 +109,8 @@ class EarthFragment : Fragment() {
         }
     }
 
-    private fun refresh() {
-        viewModel.getEarthEpic()
+    private fun refresh(date: String) {
+        viewModel.getEarthEpic(date)
     }
 
     companion object {
