@@ -7,10 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import pro.fateeva.spacechucha.databinding.ActivityMainBinding
 import pro.fateeva.spacechucha.databinding.PictureOfTheDayFragmentBinding
-import pro.fateeva.spacechucha.view.EarthFragment
-import pro.fateeva.spacechucha.view.PictureOfTheDayFragment
-import pro.fateeva.spacechucha.view.SettingsFragment
-import pro.fateeva.spacechucha.view.ThemesDialogFragment
+import pro.fateeva.spacechucha.view.*
 import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.MARS
 import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.MOON
 import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.THEME
@@ -59,7 +56,9 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.mars -> {
-                    //Item tapped
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, MarsFragment.newInstance())
+                        .commit()
                     true
                 }
                 R.id.moon -> {

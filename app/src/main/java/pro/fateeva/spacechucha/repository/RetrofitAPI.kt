@@ -22,8 +22,6 @@ interface RetrofitAPI {
     @GET ("neo/rest/v1/feed")
     fun getDataAboutAsteroidsByDate(@Query("start_date") date:String, @Query("api_key") apiKey: String): Call<AsteroidsResponseData>
 
-    fun getMarsImageByDate(
-        @Query("earth_date") earth_date: String,
-        @Query("api_key") apiKey: String,
-    ): Call<MarsPhotosServerResponseData>
+    @GET("/mars-photos/api/v1/rovers/curiosity/photos")
+    fun getMarsImageByDate(@Query("earth_date") earth_date: String, @Query("api_key") apiKey: String): Call<MarsPhotosServerResponseData>
 }
