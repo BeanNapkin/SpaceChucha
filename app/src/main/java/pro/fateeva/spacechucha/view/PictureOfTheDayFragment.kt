@@ -15,7 +15,8 @@ import kotlinx.android.synthetic.main.description_bottomsheet_fragment.view.*
 import kotlinx.android.synthetic.main.picture_of_the_day_fragment.*
 import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.PictureOfTheDayFragmentBinding
-import pro.fateeva.spacechucha.viewmodel.AppState
+import pro.fateeva.spacechucha.repository.PictureOfTheDayResponseData
+import pro.fateeva.spacechucha.viewmodel.LoadableData
 import pro.fateeva.spacechucha.viewmodel.PictureOfTheDayViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -117,9 +118,9 @@ class PictureOfTheDayFragment : Fragment() {
 //        }
 //    }
 
-    private fun renderData(state: AppState) {
+    private fun renderData(state: LoadableData<PictureOfTheDayResponseData>) {
         when (state) {
-            is AppState.Error -> {
+            is LoadableData.Error -> {
                 binding.progressBar.visibility = View.GONE
                 Log.e(null, "Ошибка при скачке изображения", state.error)
                 Snackbar.make(binding.root, "error ", Snackbar.LENGTH_SHORT)
@@ -128,21 +129,21 @@ class PictureOfTheDayFragment : Fragment() {
                     }
                     .show()
             }
-            is AppState.Loading -> {
+            is LoadableData.Loading -> {
                 binding.progressBar.visibility = View.VISIBLE
             }
-            is AppState.SuccessPictureOfTheDay -> {
+            is LoadableData.Success-> {
                 binding.progressBar.visibility = View.GONE
-                val pictureOfTheDayResponseData = state.pictureOfTheDayResponseData
+                val pictureOfTheDayResponseData = state.data
                 val url = pictureOfTheDayResponseData.url
                 binding.imageView.load(url) {
                     lifecycle(this@PictureOfTheDayFragment)
                     error(R.drawable.ic_baseline_error)
                     placeholder(R.drawable.ic_no_image)
                 }
-                binding.bottomSheetDescription.header.text = state.pictureOfTheDayResponseData.title
+                binding.bottomSheetDescription.header.text = state.data.title
                 binding.bottomSheetDescription.description.text =
-                    state.pictureOfTheDayResponseData.explanation
+                    state.data.explanation
             }
         }
     }

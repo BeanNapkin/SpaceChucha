@@ -38,6 +38,23 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_no_image" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Количество астероидов рядом с Землёй:  "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/earthImageView" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/countAsteroidsTextView"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/textView"
+            app:layout_constraintTop_toBottomOf="@id/earthImageView"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ProgressBar

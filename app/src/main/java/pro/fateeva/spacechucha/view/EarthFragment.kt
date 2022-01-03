@@ -14,8 +14,10 @@ import com.google.android.material.snackbar.Snackbar
 import pro.fateeva.spacechucha.BuildConfig
 import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.EarthFragmentBinding
-import pro.fateeva.spacechucha.viewmodel.AppState
+import pro.fateeva.spacechucha.repository.AsteroidsResponseData
+import pro.fateeva.spacechucha.repository.EarthEpicServerResponseData
 import pro.fateeva.spacechucha.viewmodel.EarthViewModel
+import pro.fateeva.spacechucha.viewmodel.LoadableData
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,8 +51,12 @@ class EarthFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getData().observe(viewLifecycleOwner, Observer {
-            renderData(it)
+
+        viewModel.getEpicData().observe(viewLifecycleOwner, Observer {
+            renderEpicData(it)
+        })
+        viewModel.getAsteroidsData().observe(viewLifecycleOwner, Observer {
+            renderAsteroidsData(it)
         })
 
         showDatePicker()
@@ -81,9 +87,9 @@ class EarthFragment : Fragment() {
         return format.format(date)
     }
 
-    private fun renderData(state: AppState) {
+    private fun renderEpicData(state: LoadableData<EarthEpicServerResponseData>) {
         when (state) {
-            is AppState.Error -> {
+            is LoadableData.Error -> {
                 binding.progressBar.visibility = View.GONE
                 Log.e("ImageLoading", "Ошибка при скачке изображения", state.error)
                 Snackbar.make(binding.root, "error ", Snackbar.LENGTH_SHORT)
@@ -92,11 +98,11 @@ class EarthFragment : Fragment() {
                     }
                     .show()
             }
-            is AppState.Loading -> {
+            is LoadableData.Loading -> {
                 binding.progressBar.visibility = View.VISIBLE
             }
-            is AppState.SuccessEarthEpic -> {
-                val earthEpicResponseData = state.earthEpicServerResponseData.last()
+            is LoadableData.Success -> {
+                val earthEpicResponseData = state.data
                 val date = earthEpicResponseData.date.split(" ").first()
                 val image = earthEpicResponseData.image
                 val url = "https://api.nasa.gov/EPIC/archive/natural/" +
@@ -114,8 +120,28 @@ class EarthFragment : Fragment() {
         }
     }
 
+    private fun renderAsteroidsData(state: LoadableData<AsteroidsResponseData>){
+        when (state) {
+            is LoadableData.Error -> {
+                binding.progressBar.visibility = View.GONE
+                Log.e("AsteroidsDataLoading", "Ошибка при скачке данных об астероидах", state.error)
+                Snackbar.make(binding.root, "error ", Snackbar.LENGTH_SHORT)
+                    .setAction("Retry") {
+                        refresh(date)
+                    }
+                    .show()
+            }
+            is LoadableData.Loading -> {
+                binding.countAsteroidsTextView.setText("loading...")
+            }
+            is LoadableData.Success -> {
+                binding.countAsteroidsTextView.setText(state.data.asteroidsCount)
+            }
+        }
+    }
+
     private fun refresh(date: String) {
-        viewModel.getEarthEpic(date)
+        viewModel.getEarthEpicAndAsteroidsData(date)
     }
 
     companion object {

@@ -11,19 +11,17 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class PictureOfTheDayViewModel (
-    private val liveDataForViewToObserve: MutableLiveData<AppState> = MutableLiveData(),
+    private val liveDataForViewToObserve: MutableLiveData<LoadableData<PictureOfTheDayResponseData>> = MutableLiveData(),
     private val retrofitImpl: RetrofitImpl = RetrofitImpl()
 ) : ViewModel() {
 
-    fun getData(): LiveData<AppState> {
-        return liveDataForViewToObserve
-    }
+    fun getData() = liveDataForViewToObserve
 
     fun getImageOfTheDay(date: String) {
-        liveDataForViewToObserve.value = AppState.Loading(0)
+        liveDataForViewToObserve.value = LoadableData.Loading(0)
         val apiKey: String = BuildConfig.NASA_API_KEY
         if (apiKey.isBlank()) {
-            liveDataForViewToObserve.value = AppState.Error(Throwable("wrong key"))
+            liveDataForViewToObserve.value = LoadableData.Error(Throwable("wrong key"))
         } else {
             retrofitImpl.getRetrofitImpl().getPictureOfTheDay(apiKey, date).enqueue(callback)
         }
@@ -35,14 +33,14 @@ class PictureOfTheDayViewModel (
             response: Response<PictureOfTheDayResponseData>
         ) {
             if (response.isSuccessful && response.body() != null) {
-                liveDataForViewToObserve.value = AppState.SuccessPictureOfTheDay(response.body()!!)
+                liveDataForViewToObserve.value = LoadableData.Success(response.body()!!)
             } else {
-                liveDataForViewToObserve.value = AppState.Error(Throwable("response is not success or body is null"))
+                liveDataForViewToObserve.value = LoadableData.Error(Throwable("response is not success or body is null"))
             }
         }
 
         override fun onFailure(call: Call<PictureOfTheDayResponseData>, t: Throwable) {
-            liveDataForViewToObserve.value = AppState.Error(Throwable("response is failure: " + t.message))
+            liveDataForViewToObserve.value = LoadableData.Error(Throwable("response is failure: " + t.message))
         }
     }
 }
