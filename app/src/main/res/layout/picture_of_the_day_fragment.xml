@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,13 +19,13 @@
             android:hint="@string/search_wiki"
             app:counterEnabled="true"
             app:counterMaxLength="20"
+            app:endIconCheckable="true"
+            app:endIconDrawable="@drawable/ic_search"
+            app:endIconMode="custom"
             app:helperText="@string/wiki_helper_text"
-            app:layout_constraintTop_toTopOf="@+id/main"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:endIconMode="custom"
-            app:endIconDrawable="@drawable/ic_search"
-            app:endIconCheckable="true">
+            app:layout_constraintTop_toTopOf="@+id/main">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputEditText"
@@ -33,36 +34,36 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-<!--        <com.google.android.material.chip.ChipGroup-->
-<!--            android:id="@+id/dayChipGroup"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/inputLayout"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:singleSelection="true">-->
+        <!--        <com.google.android.material.chip.ChipGroup-->
+        <!--            android:id="@+id/dayChipGroup"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/inputLayout"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:singleSelection="true">-->
 
-<!--            <com.google.android.material.chip.Chip-->
-<!--                android:id="@+id/today"-->
-<!--                style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/today" />-->
+        <!--            <com.google.android.material.chip.Chip-->
+        <!--                android:id="@+id/today"-->
+        <!--                style="@style/Widget.MaterialComponents.Chip.Choice"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="@string/today" />-->
 
-<!--            <com.google.android.material.chip.Chip-->
-<!--                style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--                android:id="@+id/yesterday"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/yesterday" />-->
+        <!--            <com.google.android.material.chip.Chip-->
+        <!--                style="@style/Widget.MaterialComponents.Chip.Choice"-->
+        <!--                android:id="@+id/yesterday"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="@string/yesterday" />-->
 
-<!--            <com.google.android.material.chip.Chip-->
-<!--                style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--                android:id="@+id/dayBeforeYesterday"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/day_before_yesterday" />-->
-<!--        </com.google.android.material.chip.ChipGroup>-->
+        <!--            <com.google.android.material.chip.Chip-->
+        <!--                style="@style/Widget.MaterialComponents.Chip.Choice"-->
+        <!--                android:id="@+id/dayBeforeYesterday"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="@string/day_before_yesterday" />-->
+        <!--        </com.google.android.material.chip.ChipGroup>-->
 
         <pro.fateeva.spacechucha.utils.CustomImageView
             android:id="@+id/imageView"
@@ -75,31 +76,41 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_no_image" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/videoOfTheDay"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/inputLayout"
+            app:layout_constraintStart_toStartOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/fab"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_anchor="@id/bottomAppBar"-->
-<!--        app:srcCompat="@drawable/ic_fab_add" />-->
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fab"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_anchor="@id/bottomAppBar"-->
+    <!--        app:srcCompat="@drawable/ic_fab_add" />-->
 
-    <include layout="@layout/description_bottomsheet_fragment"
-        android:id="@+id/bottomSheetDescription" />
+    <include
+        android:id="@+id/bottomSheetDescription"
+        layout="@layout/description_bottomsheet_fragment" />
 
-<!--    <com.google.android.material.bottomappbar.BottomAppBar-->
-<!--        android:id="@+id/bottomAppBar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="bottom"-->
-<!--        app:fabAlignmentMode="center"-->
-<!--        app:navigationIcon="@drawable/ic_menu_hamburger" />-->
+    <!--    <com.google.android.material.bottomappbar.BottomAppBar-->
+    <!--        android:id="@+id/bottomAppBar"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="bottom"-->
+    <!--        app:fabAlignmentMode="center"-->
+    <!--        app:navigationIcon="@drawable/ic_menu_hamburger" />-->
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

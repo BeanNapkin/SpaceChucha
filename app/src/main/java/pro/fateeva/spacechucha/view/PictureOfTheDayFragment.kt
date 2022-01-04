@@ -21,6 +21,8 @@ import pro.fateeva.spacechucha.viewmodel.PictureOfTheDayViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
+private const val IMAGE = "image"
+
 class PictureOfTheDayFragment : Fragment() {
 
     private var _binding: PictureOfTheDayFragmentBinding? = null
@@ -136,19 +138,43 @@ class PictureOfTheDayFragment : Fragment() {
             is LoadableData.Loading -> {
                 binding.progressBar.visibility = View.VISIBLE
             }
-            is LoadableData.Success-> {
+            is LoadableData.Success -> {
                 binding.progressBar.visibility = View.GONE
                 val pictureOfTheDayResponseData = state.data
                 val url = pictureOfTheDayResponseData.url
-                binding.imageView.load(url) {
-                    lifecycle(this@PictureOfTheDayFragment)
-                    error(R.drawable.ic_baseline_error)
-                    placeholder(R.drawable.ic_no_image)
+
+                if (pictureOfTheDayResponseData.mediaType.equals(IMAGE)) {
+                    showImage(url!!)
+                } else {
+                    showAVideoUrl(url!!)
                 }
+
                 binding.bottomSheetDescription.header.text = state.data.title
                 binding.bottomSheetDescription.description.text =
                     state.data.explanation
             }
+        }
+    }
+
+    private fun showImage(url: String) = with(binding) {
+        binding.imageView.visibility = View.VISIBLE
+        binding.videoOfTheDay.visibility = View.GONE
+        binding.imageView.load(url) {
+            lifecycle(this@PictureOfTheDayFragment)
+            error(R.drawable.ic_baseline_error)
+            placeholder(R.drawable.ic_no_image)
+        }
+    }
+
+    private fun showAVideoUrl(videoUrl: String) = with(binding) {
+        binding.imageView.visibility = View.GONE
+        videoOfTheDay.visibility = View.VISIBLE
+        videoOfTheDay.text = "Сегодня есть видео. Вот ссылка, тапай! \n" + "${videoUrl}"
+        videoOfTheDay.setOnClickListener {
+            val i = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(videoUrl)
+            }
+            startActivity(i)
         }
     }
 
@@ -164,7 +190,7 @@ class PictureOfTheDayFragment : Fragment() {
         return format1.format(currentDate.time)
     }
 
-    private fun setBottomSheetBehavior(){
+    private fun setBottomSheetBehavior() {
         val behavior = BottomSheetBehavior.from(binding.bottomSheetDescription.bottomSheetContainer)
         behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
     }
