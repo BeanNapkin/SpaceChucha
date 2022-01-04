@@ -52,14 +52,6 @@ class MainActivity : AppCompatActivity() {
         initBottomNavigation()
     }
 
-    override fun onBackPressed() {
-        if (mPager.currentItem == 0) {
-            super.onBackPressed()
-        } else {
-            mPager.currentItem = mPager.currentItem - 1
-        }
-    }
-
     fun initBottomNavigation() {
         mPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
