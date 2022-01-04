@@ -55,36 +55,15 @@ class EarthFragment : Fragment() {
         viewModel.getEpicData().observe(viewLifecycleOwner, Observer {
             renderEpicData(it)
         })
+
         viewModel.getAsteroidsData().observe(viewLifecycleOwner, Observer {
             renderAsteroidsData(it)
         })
 
-        showDatePicker()
+        viewModel.getCurrentDateData().observe(viewLifecycleOwner, Observer {
+            refresh(it)
+        })
 
-        binding.changeDateButton.setOnClickListener {
-            showDatePicker()
-        }
-    }
-
-    private fun showDatePicker(){
-        val datePicker =
-            MaterialDatePicker.Builder.datePicker()
-                .setTitleText("Выберите дату")
-                .build()
-
-        datePicker.show(requireActivity().supportFragmentManager, "tag")
-
-        datePicker.addOnPositiveButtonClickListener {
-            date = convertLongToString(it)
-            binding.dateTextView.setText(date)
-            refresh(date)
-        }
-    }
-
-    private fun convertLongToString(dateLong: Long): String {
-        val date = Date(dateLong)
-        val format = SimpleDateFormat("yyyy-MM-dd")
-        return format.format(date)
     }
 
     private fun renderEpicData(state: LoadableData<EarthEpicServerResponseData>) {

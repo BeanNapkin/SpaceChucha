@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import pro.fateeva.spacechucha.BuildConfig
+import pro.fateeva.spacechucha.repository.CurrentDateRepository
+import pro.fateeva.spacechucha.repository.CurrentDateRepositoryImpl
 import pro.fateeva.spacechucha.repository.PictureOfTheDayResponseData
 import pro.fateeva.spacechucha.repository.RetrofitImpl
 import retrofit2.Call
@@ -12,10 +14,12 @@ import retrofit2.Response
 
 class PictureOfTheDayViewModel (
     private val liveDataForViewToObserve: MutableLiveData<LoadableData<PictureOfTheDayResponseData>> = MutableLiveData(),
-    private val retrofitImpl: RetrofitImpl = RetrofitImpl()
+    private val retrofitImpl: RetrofitImpl = RetrofitImpl(),
+    private val currentDateRepository: CurrentDateRepository = CurrentDateRepositoryImpl
 ) : ViewModel() {
 
     fun getData() = liveDataForViewToObserve
+    fun getCurrentDateData() = currentDateRepository.currentDate
 
     fun getImageOfTheDay(date: String) {
         liveDataForViewToObserve.value = LoadableData.Loading(0)

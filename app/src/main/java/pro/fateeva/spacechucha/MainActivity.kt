@@ -2,17 +2,23 @@ package pro.fateeva.spacechucha
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.datepicker.MaterialDatePicker
 import pro.fateeva.spacechucha.databinding.ActivityMainBinding
 import pro.fateeva.spacechucha.view.*
 import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.MARS
 import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.MOON
 import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.THEME
 import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.THEME_NAME
+import pro.fateeva.spacechucha.viewmodel.MainActivityViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 private const val NUM_PAGES = 5
 
@@ -20,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var pager: ViewPager
+    lateinit var date: String
 
     private var fragmentsList = listOf(
         PictureOfTheDayFragment(),
@@ -28,6 +35,10 @@ class MainActivity : AppCompatActivity() {
         MoonFragment(),
         SettingsFragment()
     )
+
+    private val viewModel: MainActivityViewModel by lazy {
+        ViewModelProvider(this).get(MainActivityViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,9 +62,37 @@ class MainActivity : AppCompatActivity() {
         pager.adapter = pagerAdapter
 
         initBottomNavigation()
+
+        binding.appBar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.chooseDate -> showDatePicker()
+            }
+            true
+        }
     }
 
-    fun initBottomNavigation() {
+    private fun showDatePicker(){
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Выберите дату")
+                .build()
+
+        datePicker.show(supportFragmentManager, "tag")
+
+        datePicker.addOnPositiveButtonClickListener {
+            date = convertLongToString(it)
+            binding.appBar.setTitle(date)
+            viewModel.setCurrentDate(date)
+        }
+    }
+
+    private fun convertLongToString(dateLong: Long): String {
+        val date = Date(dateLong)
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        return format.format(date)
+    }
+
+    private fun initBottomNavigation() {
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,

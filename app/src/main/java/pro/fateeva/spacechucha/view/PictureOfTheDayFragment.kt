@@ -49,17 +49,21 @@ class PictureOfTheDayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.getData().observe(viewLifecycleOwner, Observer {
             renderData(it)
         })
 
-//        setBottomAppBar(view)
+        viewModel.getCurrentDateData().observe(viewLifecycleOwner, Observer {
+            refresh(it)
+        })
 
         setBottomSheetBehavior()
 
         addWikiSearch()
 
-        initChips()
+//        setBottomAppBar(view)
+//        initChips()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -67,7 +71,7 @@ class PictureOfTheDayFragment : Fragment() {
         inflater.inflate(R.menu.main_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 //        when (item.itemId) {
 //            R.id.favourite -> Toast.makeText(context, "Favourite", Toast.LENGTH_SHORT).show()
 //            R.id.settings -> requireActivity().supportFragmentManager.beginTransaction()
@@ -80,20 +84,20 @@ class PictureOfTheDayFragment : Fragment() {
 //                }
 //            }
 //        }
+//
+//        return super.onOptionsItemSelected(item)
+//    }
 
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun initChips(){
-        binding.dayChipGroup.setOnCheckedChangeListener { group, checkedId ->
-            when(checkedId){
-                R.id.today -> refresh(takeDate(0))
-                R.id.yesterday -> refresh(takeDate(-1))
-                R.id.dayBeforeYesterday -> refresh(takeDate(-2))
-            }
-        }
-        binding.dayChipGroup.check(R.id.today)
-    }
+//    private fun initChips(){
+//        binding.dayChipGroup.setOnCheckedChangeListener { group, checkedId ->
+//            when(checkedId){
+//                R.id.today -> refresh(takeDate(0))
+//                R.id.yesterday -> refresh(takeDate(-1))
+//                R.id.dayBeforeYesterday -> refresh(takeDate(-2))
+//            }
+//        }
+//        binding.dayChipGroup.check(R.id.today)
+//    }
 
 //    private fun setBottomAppBar(view: View) {
 //        val context = activity as MainActivity

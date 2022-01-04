@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import pro.fateeva.spacechucha.BuildConfig
-import pro.fateeva.spacechucha.repository.AsteroidsResponseData
-import pro.fateeva.spacechucha.repository.EarthEpicServerResponseData
-import pro.fateeva.spacechucha.repository.RetrofitImpl
+import pro.fateeva.spacechucha.repository.*
 import pro.fateeva.spacechucha.viewmodel.LoadableData.Success
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,9 +16,11 @@ class EarthViewModel(
 ) : ViewModel() {
     private val earthEpicLiveData: MutableLiveData<LoadableData<EarthEpicServerResponseData>> = MutableLiveData()
     private val asteroidsLiveData: MutableLiveData<LoadableData<AsteroidsResponseData>> = MutableLiveData()
+    private val currentDateRepository: CurrentDateRepository = CurrentDateRepositoryImpl
 
     fun getEpicData() = earthEpicLiveData
     fun getAsteroidsData() = asteroidsLiveData
+    fun getCurrentDateData() = currentDateRepository.currentDate
 
     fun getEarthEpicAndAsteroidsData(date: String) {
         earthEpicLiveData.value = LoadableData.Loading(0)

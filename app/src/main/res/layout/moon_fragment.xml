@@ -10,16 +10,22 @@
         android:layout_height="match_parent"
         android:padding="10dp">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/newear_moon_photo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
         <pro.fateeva.spacechucha.utils.CustomImageView
             android:id="@+id/moonImageView"
             android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
             android:contentDescription="@string/moon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
             app:srcCompat="@drawable/ic_no_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

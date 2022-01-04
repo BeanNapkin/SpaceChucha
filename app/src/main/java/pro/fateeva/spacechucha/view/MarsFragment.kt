@@ -54,39 +54,15 @@ class MarsFragment : Fragment() {
         viewModel.getMarsPhotosData().observe(viewLifecycleOwner, Observer {
             renderMarsPhoto(it)
         })
+
         viewModel.getMarsWeatherData().observe(viewLifecycleOwner, Observer {
             renderMarsWeather(it)
         })
 
-        binding.changeDateButton.setOnClickListener {
-            showDatePicker()
-        }
-    }
+        viewModel.getCurrentDateData().observe(viewLifecycleOwner, Observer {
+            refresh(it)
+        })
 
-    override fun onStart() {
-        super.onStart()
-        showDatePicker()
-    }
-
-    private fun showDatePicker() {
-        val datePicker =
-            MaterialDatePicker.Builder.datePicker()
-                .setTitleText("Выберите дату")
-                .build()
-
-        datePicker.show(requireActivity().supportFragmentManager, "tag")
-
-        datePicker.addOnPositiveButtonClickListener {
-            date = convertLongToString(it)
-            binding.dateTextView.setText(date)
-            refresh(date)
-        }
-    }
-
-    private fun convertLongToString(dateLong: Long): String {
-        val date = Date(dateLong)
-        val format = SimpleDateFormat("yyyy-MM-dd")
-        return format.format(date)
     }
 
     private fun renderMarsPhoto(state: LoadableData<MarsPhotosServerResponseData>) {

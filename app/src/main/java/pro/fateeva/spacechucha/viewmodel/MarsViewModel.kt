@@ -5,10 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import pro.fateeva.spacechucha.BuildConfig
-import pro.fateeva.spacechucha.repository.MarsPhotosServerResponseData
-import pro.fateeva.spacechucha.repository.MarsTempServerResponseData
-import pro.fateeva.spacechucha.repository.MarsWeatherServerResponseData
-import pro.fateeva.spacechucha.repository.RetrofitImpl
+import pro.fateeva.spacechucha.repository.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,9 +15,11 @@ class MarsViewModel(
 ) : ViewModel() {
     private val marsPhotoLiveData: MutableLiveData<LoadableData<MarsPhotosServerResponseData>> = MutableLiveData()
     private val marsWeatherLiveData: MutableLiveData<LoadableData<MarsTempServerResponseData>> = MutableLiveData()
+    private val currentDateRepository: CurrentDateRepository = CurrentDateRepositoryImpl
 
     fun getMarsPhotosData() = marsPhotoLiveData
     fun getMarsWeatherData() = marsWeatherLiveData
+    fun getCurrentDateData() = currentDateRepository.currentDate
 
     fun getMarsPhotosAndWeather(date: String) {
         marsPhotoLiveData.value = LoadableData.Loading(0)
