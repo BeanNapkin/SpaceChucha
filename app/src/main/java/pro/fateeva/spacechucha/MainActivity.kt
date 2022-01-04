@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.container, PictureOfTheDayFragment.newInstance()).commit()
 
         initBottomNavigation()
-
     }
 
     fun initBottomNavigation() {
@@ -62,7 +61,9 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.moon -> {
-                    //Item tapped
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, MoonFragment.newInstance())
+                        .commit()
                     true
                 }
                 R.id.settings -> {
