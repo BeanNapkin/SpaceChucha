@@ -19,7 +19,7 @@ private const val NUM_PAGES = 5
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mPager: ViewPager
+    private lateinit var pager: ViewPager
 
     private var fragmentsList = listOf(
         PictureOfTheDayFragment(),
@@ -45,15 +45,16 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(view)
 
-        mPager = binding.pager
+        pager = binding.pager
+        pager.setPageTransformer(true, ZoomOutPageTransformer())
         val pagerAdapter = PagerAdapter(supportFragmentManager, fragmentsList)
-        mPager.adapter = pagerAdapter
+        pager.adapter = pagerAdapter
 
         initBottomNavigation()
     }
 
     fun initBottomNavigation() {
-        mPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             override fun onPageScrollStateChanged(state: Int)= Unit
         })
         binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
-            mPager.currentItem = when (item.itemId) {
+            pager.currentItem = when (item.itemId) {
                 R.id.pictureOfTheDay -> 0
                 R.id.earth -> 1
                 R.id.mars -> 2
@@ -86,8 +87,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private inner class PagerAdapter(fm: FragmentManager, fragmentsList: List<Fragment>) :
-        FragmentStatePagerAdapter(fm) {
+    private inner class PagerAdapter(fragmentManager: FragmentManager, fragmentsList: List<Fragment>) :
+        FragmentStatePagerAdapter(fragmentManager) {
         override fun getCount(): Int = NUM_PAGES
         override fun getItem(position: Int): Fragment {
             return fragmentsList[position]
