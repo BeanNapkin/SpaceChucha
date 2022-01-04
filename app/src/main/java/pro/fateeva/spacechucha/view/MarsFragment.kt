@@ -58,11 +58,14 @@ class MarsFragment : Fragment() {
             renderMarsWeather(it)
         })
 
-        showDatePicker()
-
         binding.changeDateButton.setOnClickListener {
             showDatePicker()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        showDatePicker()
     }
 
     private fun showDatePicker() {
