@@ -44,10 +44,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val prefs: SharedPreferences = getSharedPreferences(THEME, MODE_PRIVATE)
-        val theme: String = prefs.getString(THEME_NAME, null).toString()
+        val theme: String? = prefs.getString(THEME_NAME, null)
 
         when (theme) {
-            MARS -> setTheme(R.style.MarsTheme)
+            MARS, null -> setTheme(R.style.MarsTheme)
             MOON -> setTheme(R.style.MoonTheme)
         }
 
