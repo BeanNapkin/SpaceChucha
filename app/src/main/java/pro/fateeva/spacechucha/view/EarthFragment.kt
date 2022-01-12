@@ -72,8 +72,11 @@ class EarthFragment : Fragment() {
             refresh(it)
         })
 
-        binding.earthImageView.setOnClickListener {
+       initImageViewExpanding()
+    }
 
+    private fun initImageViewExpanding(){
+        binding.earthImageView.setOnClickListener {
             binding.earthExpandedImageView.setImageDrawable(binding.earthImageView.drawable)
 
             val transition = AutoTransition()
@@ -91,7 +94,6 @@ class EarthFragment : Fragment() {
             binding.earthExpandedImageView.visibility = View.GONE
             binding.earthImageGroup.visibility = View.VISIBLE
         }
-
     }
 
     private fun renderEpicData(state: LoadableData<EarthEpicServerResponseData>) {
