@@ -1,7 +1,9 @@
 package pro.fateeva.spacechucha.view
 
 import android.os.Bundle
+import android.transition.Slide
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,14 +11,13 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.transition.ChangeBounds
-import androidx.transition.ChangeImageTransform
-import androidx.transition.TransitionManager
-import androidx.transition.TransitionSet
+import androidx.transition.*
 import coil.load
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.earth_fragment.*
+import kotlinx.android.synthetic.main.earth_fragment.main
+import kotlinx.android.synthetic.main.picture_of_the_day_fragment.*
 import pro.fateeva.spacechucha.BuildConfig
 import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.EarthFragmentBinding
@@ -70,6 +71,26 @@ class EarthFragment : Fragment() {
         viewModel.getCurrentDateData().observe(viewLifecycleOwner, Observer {
             refresh(it)
         })
+
+        binding.earthImageView.setOnClickListener {
+
+            binding.earthExpandedImageView.setImageDrawable(binding.earthImageView.drawable)
+
+            val transition = AutoTransition()
+            transition.duration = 200
+            TransitionManager.beginDelayedTransition(main, transition)
+            binding.earthImageGroup.visibility = View.GONE
+            binding.earthExpandedImageView.visibility = View.VISIBLE
+
+        }
+
+        binding.earthExpandedImageView.setOnClickListener {
+            val transition = AutoTransition()
+            transition.duration = 200
+            TransitionManager.beginDelayedTransition(main, transition)
+            binding.earthExpandedImageView.visibility = View.GONE
+            binding.earthImageGroup.visibility = View.VISIBLE
+        }
 
     }
 
