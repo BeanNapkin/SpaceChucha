@@ -5,12 +5,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.transition.ChangeBounds
+import androidx.transition.ChangeImageTransform
+import androidx.transition.TransitionManager
+import androidx.transition.TransitionSet
 import coil.load
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.earth_fragment.*
 import pro.fateeva.spacechucha.BuildConfig
 import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.EarthFragmentBinding
@@ -24,6 +30,7 @@ import java.util.*
 class EarthFragment : Fragment() {
 
     lateinit var date: String
+    private var isExpanded = false
 
     private var _binding: EarthFragmentBinding? = null
     val binding: EarthFragmentBinding
@@ -85,7 +92,7 @@ class EarthFragment : Fragment() {
                 val date = earthEpicResponseData.date.split(" ").first()
                 val image = earthEpicResponseData.image
                 val url = "https://api.nasa.gov/EPIC/archive/natural/" +
-                        date.replace("-","/",true) +
+                        date.replace("-", "/", true) +
                         "/png/" +
                         "$image" +
                         ".png?api_key=${BuildConfig.NASA_API_KEY}"
@@ -99,7 +106,7 @@ class EarthFragment : Fragment() {
         }
     }
 
-    private fun renderAsteroidsData(state: LoadableData<AsteroidsResponseData>){
+    private fun renderAsteroidsData(state: LoadableData<AsteroidsResponseData>) {
         when (state) {
             is LoadableData.Error -> {
                 binding.progressBar.visibility = View.GONE

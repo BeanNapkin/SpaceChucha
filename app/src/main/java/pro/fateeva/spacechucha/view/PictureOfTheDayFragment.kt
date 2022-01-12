@@ -1,16 +1,23 @@
 package pro.fateeva.spacechucha.view
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.transition.Slide
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.*
+import android.widget.FrameLayout
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.description_bottomsheet_fragment.view.*
 import kotlinx.android.synthetic.main.picture_of_the_day_fragment.*
 import pro.fateeva.spacechucha.R
@@ -20,6 +27,8 @@ import pro.fateeva.spacechucha.viewmodel.LoadableData
 import pro.fateeva.spacechucha.viewmodel.PictureOfTheDayViewModel
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.properties.Delegates
+
 
 private const val IMAGE = "image"
 
@@ -196,6 +205,14 @@ class PictureOfTheDayFragment : Fragment() {
     }
 
     private fun addWikiSearch() {
+        binding.wikiButton.setOnClickListener {
+            binding.wikiButton.visibility = View.GONE
+            val transition = Slide(Gravity.END)
+            transition.duration = 1000
+            TransitionManager.beginDelayedTransition(main, transition)
+            binding.inputLayout.visibility = View.VISIBLE
+        }
+
         inputLayout.setEndIconOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse("https://en.wikipedia.org/wiki/${inputEditText.text.toString()}")
@@ -209,3 +226,4 @@ class PictureOfTheDayFragment : Fragment() {
         fun newInstance() = PictureOfTheDayFragment()
     }
 }
+
