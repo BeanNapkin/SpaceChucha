@@ -23,6 +23,7 @@ import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.EarthFragmentBinding
 import pro.fateeva.spacechucha.repository.AsteroidsResponseData
 import pro.fateeva.spacechucha.repository.EarthEpicServerResponseData
+import pro.fateeva.spacechucha.utils.fadeInOnLoad
 import pro.fateeva.spacechucha.viewmodel.EarthViewModel
 import pro.fateeva.spacechucha.viewmodel.LoadableData
 import java.text.SimpleDateFormat
@@ -72,10 +73,10 @@ class EarthFragment : Fragment() {
             refresh(it)
         })
 
-       initImageViewExpanding()
+        initImageViewExpanding()
     }
 
-    private fun initImageViewExpanding(){
+    private fun initImageViewExpanding() {
         binding.earthImageView.setOnClickListener {
             binding.earthExpandedImageView.setImageDrawable(binding.earthImageView.drawable)
 
@@ -101,10 +102,8 @@ class EarthFragment : Fragment() {
             is LoadableData.Error -> {
                 binding.progressBar.visibility = View.GONE
                 Log.e("ImageLoading", "Ошибка при скачке изображения", state.error)
-                Snackbar.make(binding.root, "error ", Snackbar.LENGTH_SHORT)
-                    .setAction("Retry") {
-                        refresh(date)
-                    }
+                binding.earthImageView.setImageDrawable(resources.getDrawable(R.drawable.ic_no_image, requireContext().theme))
+                Snackbar.make(binding.root, "Нет фото для этой даты", 10000)
                     .show()
             }
             is LoadableData.Loading -> {
@@ -121,13 +120,14 @@ class EarthFragment : Fragment() {
                         ".png?api_key=${BuildConfig.NASA_API_KEY}"
                 binding.earthImageView.load(url) {
                     lifecycle(this@EarthFragment)
+                    fadeInOnLoad(binding.earthImageView)
                     error(R.drawable.ic_baseline_error)
-                    placeholder(R.drawable.ic_no_image)
                 }
                 binding.progressBar.visibility = View.GONE
             }
         }
     }
+
 
     private fun renderAsteroidsData(state: LoadableData<AsteroidsResponseData>) {
         when (state) {

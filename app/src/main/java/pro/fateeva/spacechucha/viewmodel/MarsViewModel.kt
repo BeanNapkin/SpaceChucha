@@ -13,8 +13,10 @@ import retrofit2.Response
 class MarsViewModel(
     private val retrofitImpl: RetrofitImpl = RetrofitImpl()
 ) : ViewModel() {
-    private val marsPhotoLiveData: MutableLiveData<LoadableData<MarsPhotosServerResponseData>> = MutableLiveData()
-    private val marsWeatherLiveData: MutableLiveData<LoadableData<MarsTempServerResponseData>> = MutableLiveData()
+    private val marsPhotoLiveData: MutableLiveData<LoadableData<MarsPhotosServerResponseData>> =
+        MutableLiveData()
+    private val marsWeatherLiveData: MutableLiveData<LoadableData<MarsTempServerResponseData>> =
+        MutableLiveData()
     private val currentDateRepository: CurrentDateRepository = CurrentDateRepositoryImpl
 
     fun getMarsPhotosData() = marsPhotoLiveData
@@ -41,12 +43,14 @@ class MarsViewModel(
             if (response.isSuccessful && response.body() != null) {
                 marsPhotoLiveData.value = LoadableData.Success(response.body()!!)
             } else {
-                marsPhotoLiveData.value = LoadableData.Error(Throwable("mars photos is not success or body is null"))
+                marsPhotoLiveData.value =
+                    LoadableData.Error(Throwable("mars photos is not success or body is null"))
             }
         }
 
         override fun onFailure(call: Call<MarsPhotosServerResponseData>, t: Throwable) {
-            marsPhotoLiveData.value = LoadableData.Error(Throwable("mars photos is failure: " + t.message))
+            marsPhotoLiveData.value =
+                LoadableData.Error(Throwable("mars photos is failure: " + t.message))
         }
     }
 
@@ -56,16 +60,30 @@ class MarsViewModel(
             response: Response<Map<String, JsonElement>>
         ) {
             if (response.isSuccessful && response.body() != null) {
-                val dayData = response.body()!![response.body()!!.keys.first()] ?: error("Data not found")
-                val weatherData = Gson().fromJson(dayData, MarsWeatherServerResponseData::class.java)
-                marsWeatherLiveData.value = LoadableData.Success(weatherData.at)
+                val map = response.body()!!
+                var weatherData: MarsWeatherServerResponseData? = null
+                val solKeys = map["sol_keys"]
+                if (solKeys?.isJsonArray == true) {
+                    val sol = solKeys.asJsonArray.firstOrNull()
+                    weatherData = Gson().fromJson(sol, MarsWeatherServerResponseData::class.java)
+                }
+
+                if (weatherData != null) {
+                    marsWeatherLiveData.value = LoadableData.Success(weatherData.at)
+                } else {
+                    marsWeatherLiveData.value =
+                        LoadableData.Error(Throwable("no data for this day"))
+                }
+
             } else {
-                marsWeatherLiveData.value = LoadableData.Error(Throwable("mars weather is not success or body is null"))
+                marsWeatherLiveData.value =
+                    LoadableData.Error(Throwable("mars weather is not success or body is null"))
             }
         }
 
         override fun onFailure(call: Call<Map<String, JsonElement>>, t: Throwable) {
-            marsWeatherLiveData.value = LoadableData.Error(Throwable("mars weather is failure: " + t.message))
+            marsWeatherLiveData.value =
+                LoadableData.Error(Throwable("mars weather is failure: " + t.message))
         }
     }
 }

@@ -16,6 +16,7 @@ import pro.fateeva.spacechucha.databinding.MarsFragmentBinding
 import pro.fateeva.spacechucha.databinding.MoonFragmentBinding
 import pro.fateeva.spacechucha.repository.MarsPhotosServerResponseData
 import pro.fateeva.spacechucha.repository.MarsTempServerResponseData
+import pro.fateeva.spacechucha.utils.fadeInOnLoad
 import pro.fateeva.spacechucha.viewmodel.LoadableData
 import pro.fateeva.spacechucha.viewmodel.MarsViewModel
 import java.text.SimpleDateFormat
@@ -55,8 +56,8 @@ class MoonFragment : Fragment() {
         binding.progressBar.visibility = View.VISIBLE
         binding.moonImageView.load("https://trek.nasa.gov/tiles/Moon/EQ/LRO_WAC_Mosaic_Global_303ppd_v02/1.0.0/default/default028mm/0/0/0.jpg") {
             lifecycle(this@MoonFragment)
+            fadeInOnLoad(binding.moonImageView)
             error(R.drawable.ic_baseline_error)
-            placeholder(R.drawable.ic_no_image)
         }
         binding.progressBar.visibility = View.GONE
     }

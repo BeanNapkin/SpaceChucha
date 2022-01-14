@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,7 @@ import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.MarsFragmentBinding
 import pro.fateeva.spacechucha.repository.MarsPhotosServerResponseData
 import pro.fateeva.spacechucha.repository.MarsTempServerResponseData
+import pro.fateeva.spacechucha.utils.fadeInOnLoad
 import pro.fateeva.spacechucha.viewmodel.LoadableData
 import pro.fateeva.spacechucha.viewmodel.MarsViewModel
 import java.text.SimpleDateFormat
@@ -82,14 +84,15 @@ class MarsFragment : Fragment() {
             is LoadableData.Success -> {
                 val marsPhotosServerResponseData = state.data.photos
                 if (marsPhotosServerResponseData.isEmpty()) {
-                    Snackbar.make(binding.root, "Нет фото для этой даты", Snackbar.LENGTH_SHORT)
+                    binding.marsImageView.setImageDrawable(resources.getDrawable(R.drawable.ic_no_image, requireContext().theme))
+                    Snackbar.make(binding.root, "Нет фото для этой даты", 10000)
                         .show()
                 } else {
                     val image = marsPhotosServerResponseData.last().image
                     binding.marsImageView.load(image) {
                         lifecycle(this@MarsFragment)
+                        fadeInOnLoad(binding.marsImageView)
                         error(R.drawable.ic_baseline_error)
-                        placeholder(R.drawable.ic_no_image)
                     }
                     binding.progressBar.visibility = View.GONE
                 }
@@ -102,11 +105,8 @@ class MarsFragment : Fragment() {
             is LoadableData.Error -> {
                 binding.progressBar.visibility = View.GONE
                 Log.e("WeatherLoading", "Ошибка при скачке погоды", state.error)
-                Snackbar.make(binding.root, "error ", Snackbar.LENGTH_SHORT)
-                    .setAction("Retry") {
-                        refresh(date)
-                    }
-                    .show()
+                binding.minTempTextView.setText("Нет данных о погоде на сегодня")
+                binding.maxTempTextView.setText("")
             }
             is LoadableData.Loading -> {
                 binding.minTempTextView.setText("loading...")
