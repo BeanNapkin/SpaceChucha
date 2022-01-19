@@ -7,4 +7,5 @@ import java.util.*
 interface CurrentDateRepository {
     val currentDate: LiveData<String>
     fun setCurrentDate(date: String)
+    fun getCurrentDate() : String
 }

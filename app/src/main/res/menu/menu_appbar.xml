@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/notes"
+        android:title="@string/notes"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_speaker_notes_24"/>
+
+    <item
         android:id="@+id/fun"
         android:title="@string/fun"
         app:showAsAction="ifRoom"
@@ -11,6 +17,7 @@
     <item
         android:id="@+id/chooseDate"
         android:title="@string/change_date"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_date_range_24"/>
 
 </menu>

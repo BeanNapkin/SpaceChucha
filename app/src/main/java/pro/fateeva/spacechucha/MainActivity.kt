@@ -1,12 +1,18 @@
 package pro.fateeva.spacechucha
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.MenuItem
+import android.os.PersistableBundle
+import android.util.AttributeSet
+import android.view.Menu
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -26,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var pager: ViewPager
-    lateinit var date: String
+    var date: String? = null
 
     private var fragmentsList = listOf(
         PictureOfTheDayFragment(),
@@ -63,16 +69,45 @@ class MainActivity : AppCompatActivity() {
 
         initBottomNavigation()
 
+        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentsCallBacks(), false)
+
         binding.appBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.chooseDate -> showDatePicker()
                 R.id.`fun` -> FactsFragment.newInstance().show(supportFragmentManager, null)
+                R.id.notes -> supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, NotesFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit()
             }
             true
         }
     }
 
-    private fun showDatePicker(){
+    inner class fragmentsCallBacks : FragmentManager.FragmentLifecycleCallbacks(){
+
+        override fun onFragmentAttached(fm: FragmentManager, f: Fragment, context: Context) {
+            super.onFragmentAttached(fm, f, context)
+            if (f is NotesFragment){
+                binding.bottomNavigation.visibility = View.GONE
+                binding.appBar.title = "Космические заметки"
+                binding.appBar.menu.findItem(R.id.chooseDate).setVisible(false)
+                binding.appBar.menu.findItem(R.id.notes).setVisible(false)
+            }
+        }
+
+        override fun onFragmentDetached(fm: FragmentManager, f: Fragment) {
+            super.onFragmentDetached(fm, f)
+            if (f is NotesFragment){
+                binding.bottomNavigation.visibility = View.VISIBLE
+                binding.appBar.setTitle(date ?: "Сегодня")
+                binding.appBar.menu.findItem(R.id.chooseDate).setVisible(true)
+                binding.appBar.menu.findItem(R.id.notes).setVisible(true)
+            }
+        }
+    }
+
+    private fun showDatePicker() {
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Выберите дату")
@@ -83,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         datePicker.addOnPositiveButtonClickListener {
             date = convertLongToString(it)
             binding.appBar.setTitle(date)
-            viewModel.setCurrentDate(date)
+            viewModel.setCurrentDate(date!!)
         }
     }
 
@@ -102,7 +137,7 @@ class MainActivity : AppCompatActivity() {
             ) = Unit
 
             override fun onPageSelected(position: Int) {
-                binding.bottomNavigation.selectedItemId = when(position) {
+                binding.bottomNavigation.selectedItemId = when (position) {
                     0 -> R.id.pictureOfTheDay
                     1 -> R.id.earth
                     2 -> R.id.mars
@@ -112,7 +147,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onPageScrollStateChanged(state: Int)= Unit
+            override fun onPageScrollStateChanged(state: Int) = Unit
         })
         binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
             pager.currentItem = when (item.itemId) {
@@ -127,7 +162,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private inner class PagerAdapter(fragmentManager: FragmentManager, fragmentsList: List<Fragment>) :
+    private inner class PagerAdapter(
+        fragmentManager: FragmentManager,
+        fragmentsList: List<Fragment>
+    ) :
         FragmentStatePagerAdapter(fragmentManager) {
         override fun getCount(): Int = NUM_PAGES
         override fun getItem(position: Int): Fragment {
@@ -135,3 +173,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+

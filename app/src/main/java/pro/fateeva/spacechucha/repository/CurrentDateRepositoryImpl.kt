@@ -13,6 +13,10 @@ object CurrentDateRepositoryImpl : CurrentDateRepository {
         currentDateMutableLiveData.value = date
     }
 
+    override fun getCurrentDate(): String {
+        return currentDateMutableLiveData.value.toString()
+    }
+
     private fun takeTodayDate(): String {
         val format = SimpleDateFormat("yyyy-MM-dd")
         return format.format(Date())
