@@ -23,4 +23,6 @@
     <string name="fun_facts">Занимательные факты</string>
     <string name="fun">Fun</string>
     <string name="notes">Заметки</string>
+    <string name="space_note">Космическая заметка</string>
+    <string name="astronomy_note">Звёздная заметка</string>
 </resources>

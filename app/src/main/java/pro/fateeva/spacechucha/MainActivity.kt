@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
             super.onFragmentAttached(fm, f, context)
             if (f is NotesFragment){
                 binding.bottomNavigation.visibility = View.GONE
-                binding.appBar.title = "Космические заметки"
+                binding.appBar.title = "Заметки"
                 binding.appBar.menu.findItem(R.id.chooseDate).setVisible(false)
                 binding.appBar.menu.findItem(R.id.notes).setVisible(false)
             }
