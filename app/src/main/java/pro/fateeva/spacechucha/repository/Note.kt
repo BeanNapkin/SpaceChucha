@@ -5,7 +5,7 @@ const val TYPE_SPACE = "space"
 
 data class Note(
     val id: Int,
-    val type: String,
+    val type: Int,
     val date: String,
     val text: String
 )

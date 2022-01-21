@@ -9,6 +9,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import okhttp3.internal.notify
+import pro.fateeva.spacechucha.NotesRecyclerAdapter
 import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.NotesFragmentBinding
 import pro.fateeva.spacechucha.repository.Note
@@ -17,8 +19,8 @@ import pro.fateeva.spacechucha.viewmodel.PictureOfTheDayViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-const val TYPE_ASTRONOMY = "astronomy"
-const val TYPE_SPACE = "space"
+const val TYPE_ASTRONOMY = 0
+const val TYPE_SPACE = 1
 
 class NotesFragment : Fragment() {
 
@@ -66,9 +68,17 @@ class NotesFragment : Fragment() {
             binding.fabMenuLayout.visibility = View.GONE
             showNoteDialog(TYPE_ASTRONOMY)
         }
+
+        val adapter = NotesRecyclerAdapter(viewModel.getNotes())
+        binding.recyclerView.adapter = adapter
+
+        viewModel.getNoteListLiveData().observe(viewLifecycleOwner){
+            adapter.notesList = it
+            adapter.notifyDataSetChanged()
+        }
     }
 
-    fun showNoteDialog(noteType : String) {
+    fun showNoteDialog(noteType : Int) {
         val builder = MaterialAlertDialogBuilder(requireContext())
 
         if (noteType == TYPE_SPACE){
@@ -91,7 +101,6 @@ class NotesFragment : Fragment() {
             }
             val note = Note(id, noteType, getCurrentDate(), input.text.toString())
             viewModel.saveNote(note)
-
         })
 
         builder.setNegativeButton(
