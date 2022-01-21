@@ -6,6 +6,7 @@ interface NotesRepository {
     val liveData: LiveData<List<Note>>
 
     fun addNote(note: Note)
+    fun updateNote(note: Note)
     fun deleteNote(note: Note)
     fun getNotesList() : List<Note>
     fun getSize() : Int

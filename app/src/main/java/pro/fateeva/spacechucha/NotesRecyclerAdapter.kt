@@ -3,13 +3,18 @@ package pro.fateeva.spacechucha
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pro.fateeva.spacechucha.databinding.AstronomyNoteItemBinding
 import pro.fateeva.spacechucha.databinding.SpaceNoteItemBinding
 import pro.fateeva.spacechucha.repository.Note
 import pro.fateeva.spacechucha.view.TYPE_SPACE
+import java.text.SimpleDateFormat
+import java.util.*
 
-class NotesRecyclerAdapter(var notesList: List<Note>) :
+class NotesRecyclerAdapter(var notesList: List<Note>, private val callbackListener: MyCallback) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -57,6 +62,10 @@ class NotesRecyclerAdapter(var notesList: List<Note>) :
             SpaceNoteItemBinding.bind(itemView).apply {
                 textTextView.text = note.text
                 dateTextView.text = note.date
+
+                cardView.setOnClickListener {
+                    callbackListener.onClick(notesList.indexOf(note))
+                }
             }
         }
     }
@@ -66,6 +75,10 @@ class NotesRecyclerAdapter(var notesList: List<Note>) :
             AstronomyNoteItemBinding.bind(itemView).apply {
                 textTextView.text = note.text
                 dateTextView.text = note.date
+
+                cardView.setOnClickListener {
+                    callbackListener.onClick(notesList.indexOf(note))
+                }
             }
         }
     }

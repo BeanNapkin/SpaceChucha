@@ -15,6 +15,11 @@ class NotesRepositoryImpl : NotesRepository {
         mutableLiveData.value = noteList
     }
 
+    override fun updateNote(note: Note) {
+        noteList[note.id-1]= note
+        mutableLiveData.value = noteList
+    }
+
     override fun deleteNote(note: Note) {
         noteList.remove(note)
     }

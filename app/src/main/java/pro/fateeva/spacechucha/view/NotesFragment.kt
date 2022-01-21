@@ -1,21 +1,16 @@
 package pro.fateeva.spacechucha.view
 
-import android.content.DialogInterface
 import android.os.Bundle
-import android.text.InputType
 import android.view.*
 import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import okhttp3.internal.notify
+import pro.fateeva.spacechucha.MyCallback
 import pro.fateeva.spacechucha.NotesRecyclerAdapter
-import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.NotesFragmentBinding
 import pro.fateeva.spacechucha.repository.Note
 import pro.fateeva.spacechucha.viewmodel.NotesViewModel
-import pro.fateeva.spacechucha.viewmodel.PictureOfTheDayViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -61,15 +56,22 @@ class NotesFragment : Fragment() {
 
         binding.spaceNoteTextView.setOnClickListener {
             binding.fabMenuLayout.visibility = View.GONE
-            showNoteDialog(TYPE_SPACE)
+            showNoteDialog(noteType = TYPE_SPACE)
         }
 
         binding.astronomyNoteTextView.setOnClickListener {
             binding.fabMenuLayout.visibility = View.GONE
-            showNoteDialog(TYPE_ASTRONOMY)
+            showNoteDialog(noteType = TYPE_ASTRONOMY)
         }
 
-        val adapter = NotesRecyclerAdapter(viewModel.getNotes())
+        val adapter = NotesRecyclerAdapter(viewModel.getNotes(), object : MyCallback {
+            override fun onClick(position: Int) {
+                val note = viewModel.getNotes()[position]
+                showNoteDialog(note, note.type)
+            }
+
+        })
+
         binding.recyclerView.adapter = adapter
 
         viewModel.getNoteListLiveData().observe(viewLifecycleOwner) {
@@ -78,7 +80,7 @@ class NotesFragment : Fragment() {
         }
     }
 
-    fun showNoteDialog(noteType: Int) {
+    fun showNoteDialog(note: Note? = null, noteType: Int) {
         val builder = MaterialAlertDialogBuilder(requireContext())
 
         if (noteType == TYPE_SPACE) {
@@ -88,13 +90,23 @@ class NotesFragment : Fragment() {
         }
 
         val input = EditText(requireContext())
-        input.setHint("Введите текст")
-        builder.setView(input)
 
-        builder.setPositiveButton("Сохранить") { dialog, which ->
-            val note =
-                Note(viewModel.getSize() + 1, noteType, getCurrentDate(), input.text.toString())
-            viewModel.saveNote(note)
+        if (note == null) {
+            input.setHint("Введите текст")
+            builder.setView(input)
+            builder.setPositiveButton("Сохранить") { dialog, which ->
+                val note =
+                    Note(viewModel.getSize() + 1, noteType, getCurrentDate(), input.text.toString())
+                viewModel.saveNote(note)
+            }
+        } else {
+            input.setText(note.text)
+            builder.setView(input)
+            builder.setPositiveButton("Сохранить") { dialog, which ->
+                val editNote =
+                    Note(note.id, note.type, getCurrentDate(), input.text.toString())
+                viewModel.updateNote(editNote)
+            }
         }
 
         builder.setNegativeButton(
