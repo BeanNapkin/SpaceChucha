@@ -52,7 +52,7 @@ class NotesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.fab.setOnClickListener {
-            if(binding.fabMenuLayout.visibility == View.VISIBLE){
+            if (binding.fabMenuLayout.visibility == View.VISIBLE) {
                 binding.fabMenuLayout.visibility = View.GONE
             } else {
                 binding.fabMenuLayout.visibility = View.VISIBLE
@@ -72,16 +72,16 @@ class NotesFragment : Fragment() {
         val adapter = NotesRecyclerAdapter(viewModel.getNotes())
         binding.recyclerView.adapter = adapter
 
-        viewModel.getNoteListLiveData().observe(viewLifecycleOwner){
+        viewModel.getNoteListLiveData().observe(viewLifecycleOwner) {
             adapter.notesList = it
             adapter.notifyDataSetChanged()
         }
     }
 
-    fun showNoteDialog(noteType : Int) {
+    fun showNoteDialog(noteType: Int) {
         val builder = MaterialAlertDialogBuilder(requireContext())
 
-        if (noteType == TYPE_SPACE){
+        if (noteType == TYPE_SPACE) {
             builder.setTitle("Космическая заметка")
         } else {
             builder.setTitle("Звёздная заметка")
@@ -91,21 +91,15 @@ class NotesFragment : Fragment() {
         input.setHint("Введите текст")
         builder.setView(input)
 
-        builder.setPositiveButton("Сохранить", DialogInterface.OnClickListener { dialog, which ->
-            val id: Int
-
-            if (viewModel.getSize() == null){
-                 id = 0
-            } else {
-                id = viewModel.getSize() + 1
-            }
-            val note = Note(id, noteType, getCurrentDate(), input.text.toString())
+        builder.setPositiveButton("Сохранить") { dialog, which ->
+            val note =
+                Note(viewModel.getSize() + 1, noteType, getCurrentDate(), input.text.toString())
             viewModel.saveNote(note)
-        })
+        }
 
         builder.setNegativeButton(
-            "Отмена",
-            DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
+            "Отмена"
+        ) { dialog, which -> dialog.cancel() }
         builder.show()
     }
 

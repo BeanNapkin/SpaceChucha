@@ -57,7 +57,6 @@ class NotesRecyclerAdapter(var notesList: List<Note>) :
             SpaceNoteItemBinding.bind(itemView).apply {
                 textTextView.text = note.text
                 dateTextView.text = note.date
-
             }
         }
     }
