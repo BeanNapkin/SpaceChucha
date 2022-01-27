@@ -12,19 +12,19 @@ class NotesRepositoryImpl : NotesRepository {
 
     override fun addNote(note: Note) {
         noteList.add(note)
-        mutableLiveData.value = noteList
+        mutableLiveData.value = noteList.toList()
     }
 
     override fun updateNote(note: Note) {
         noteList[note.id-1]= note
-        mutableLiveData.value = noteList
+        mutableLiveData.value = noteList.toList()
     }
 
     override fun deleteNote(note: Note) {
         noteList.remove(note)
     }
 
-    override fun getNotesList(): List<Note> = noteList
+    override fun getNotesList(): List<Note> = noteList.toList()
 
     override fun getSize(): Int = noteList.size
 }

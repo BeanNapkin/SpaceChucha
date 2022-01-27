@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pro.fateeva.spacechucha.databinding.AstronomyNoteItemBinding
@@ -64,7 +65,7 @@ class NotesRecyclerAdapter(var notesList: List<Note>, private val callbackListen
                 dateTextView.text = note.date
 
                 cardView.setOnClickListener {
-                    callbackListener.onClick(notesList.indexOf(note))
+                    callbackListener.onClick(this@SpaceViewHolder.adapterPosition)
                 }
             }
         }
@@ -77,9 +78,30 @@ class NotesRecyclerAdapter(var notesList: List<Note>, private val callbackListen
                 dateTextView.text = note.date
 
                 cardView.setOnClickListener {
-                    callbackListener.onClick(notesList.indexOf(note))
+                    callbackListener.onClick(this@AstronomyViewHolder.adapterPosition)
                 }
             }
         }
+    }
+}
+
+class DiffUtilCallback(oldList: List<Note>, newList: List<Note>) : DiffUtil.Callback() {
+    val oldList: List<Note> = oldList
+    val newList: List<Note> = newList
+
+    override fun getOldListSize(): Int = oldList?.size
+
+    override fun getNewListSize(): Int = newList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldNote: Note = oldList[oldItemPosition]
+        val newNote: Note = newList[newItemPosition]
+        return oldNote.id === newNote.id
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldNote: Note = oldList[oldItemPosition]
+        val newNote: Note = newList[newItemPosition]
+        return oldNote == newNote
     }
 }

@@ -17,7 +17,7 @@ class NotesViewModel (
     fun saveNote(note: Note) = notesRepository.addNote(note)
     fun updateNote(note: Note) = notesRepository.updateNote(note)
     fun getSize() = notesRepository.getSize()
-    fun getNotes() = notesRepository.getNotesList()
+    fun getNotes() = notesRepository.getNotesList().toList()
     fun getNoteListLiveData() = notesRepository.liveData
 
 }
