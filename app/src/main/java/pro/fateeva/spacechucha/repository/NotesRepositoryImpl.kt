@@ -40,4 +40,10 @@ class NotesRepositoryImpl : NotesRepository {
         noteList.add(toPosition, note)
         mutableLiveData.value = noteList.toList()
     }
+
+    override fun toggleFavourite(position: Int) {
+        val newNote = noteList[position].copy(isFavourite = !noteList[position].isFavourite)
+        noteList[position] = newNote
+        mutableLiveData.value = noteList.toList()
+    }
 }

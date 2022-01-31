@@ -11,7 +11,7 @@ import pro.fateeva.spacechucha.databinding.SpaceNoteItemBinding
 import pro.fateeva.spacechucha.repository.Note
 import java.util.*
 
-class NotesRecyclerAdapter(var notesList: List<Note>, private val callbackListener: MyCallback) :
+class NotesRecyclerAdapter(var notesList: List<Note>, private val cellClickListener: MyCallback, private val favouriteClickListener: MyCallback) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -62,7 +62,23 @@ class NotesRecyclerAdapter(var notesList: List<Note>, private val callbackListen
                 dateTextView.text = note.date
 
                 cardView.setOnClickListener {
-                    callbackListener.onClick(this@SpaceViewHolder.adapterPosition)
+                    cellClickListener.onClick(this@SpaceViewHolder.adapterPosition)
+                }
+
+                if (note.isFavourite){
+                    favouriteBorderImageView.visibility = View.INVISIBLE
+                    favouriteFillImageView.visibility = View.VISIBLE
+                } else {
+                    favouriteBorderImageView.visibility = View.VISIBLE
+                    favouriteFillImageView.visibility = View.INVISIBLE
+                }
+
+                favouriteBorderImageView.setOnClickListener {
+                    favouriteClickListener.onClick(this@SpaceViewHolder.adapterPosition)
+                }
+
+                favouriteFillImageView.setOnClickListener {
+                    favouriteClickListener.onClick(this@SpaceViewHolder.adapterPosition)
                 }
             }
         }
@@ -84,7 +100,23 @@ class NotesRecyclerAdapter(var notesList: List<Note>, private val callbackListen
                 dateTextView.text = note.date
 
                 cardView.setOnClickListener {
-                    callbackListener.onClick(this@AstronomyViewHolder.adapterPosition)
+                    cellClickListener.onClick(this@AstronomyViewHolder.adapterPosition)
+                }
+
+                if (note.isFavourite){
+                    favouriteBorderImageView.visibility = View.INVISIBLE
+                    favouriteFillImageView.visibility = View.VISIBLE
+                } else {
+                    favouriteBorderImageView.visibility = View.VISIBLE
+                    favouriteFillImageView.visibility = View.INVISIBLE
+                }
+
+                favouriteBorderImageView.setOnClickListener {
+                    favouriteClickListener.onClick(this@AstronomyViewHolder.adapterPosition)
+                }
+
+                favouriteFillImageView.setOnClickListener {
+                    favouriteClickListener.onClick(this@AstronomyViewHolder.adapterPosition)
                 }
             }
         }

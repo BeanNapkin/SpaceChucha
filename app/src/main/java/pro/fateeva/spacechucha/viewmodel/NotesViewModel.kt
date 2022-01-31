@@ -14,7 +14,6 @@ class NotesViewModel (
     fun getNotes() = notesRepository.getNotesList().toList()
     fun getNoteListLiveData() = notesRepository.liveData
     fun moveNote(fromPosition: Int, toPosition: Int) = notesRepository.moveNote(fromPosition, toPosition)
+    fun toggleFavourite(position: Int) = notesRepository.toggleFavourite(position)
     fun deleteNote(id: Int) = notesRepository.deleteNote(id)
-
-
 }

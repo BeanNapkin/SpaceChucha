@@ -12,4 +12,5 @@ interface NotesRepository {
     fun getNotesList() : List<Note>
     fun getSize() : Int
     fun moveNote(fromPosition: Int, toPosition: Int)
+    fun toggleFavourite(position: Int)
 }

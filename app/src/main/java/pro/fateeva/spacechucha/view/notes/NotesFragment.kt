@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.notes_fragment.*
+import kotlinx.android.synthetic.main.space_note_item.*
 import pro.fateeva.spacechucha.databinding.NotesFragmentBinding
 import pro.fateeva.spacechucha.repository.Note
 import pro.fateeva.spacechucha.viewmodel.NotesViewModel
@@ -66,13 +67,19 @@ class NotesFragment : Fragment(), ItemTouchCallback {
             showNoteDialog(noteType = TYPE_ASTRONOMY)
         }
 
-        val adapter = NotesRecyclerAdapter(viewModel.getNotes(), object : MyCallback {
-            override fun onClick(position: Int) {
-                val note = viewModel.getNotes()[position]
-                showNoteDialog(note, note.type)
-            }
+        val adapter = NotesRecyclerAdapter(
+            viewModel.getNotes(),
+            cellClickListener = object : MyCallback {
+                override fun onClick(position: Int) {
+                    val note = viewModel.getNotes()[position]
+                    showNoteDialog(note, note.type)
+                }
 
-        })
+            }, favouriteClickListener = object : MyCallback {
+                override fun onClick(position: Int) {
+                    viewModel.toggleFavourite(position)
+                }
+            })
 
         binding.recyclerView.adapter = adapter
 
@@ -136,7 +143,7 @@ class NotesFragment : Fragment(), ItemTouchCallback {
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
-       viewModel.moveNote(fromPosition, toPosition)
+        viewModel.moveNote(fromPosition, toPosition)
     }
 
     override fun onItemDismiss(position: Int) {
