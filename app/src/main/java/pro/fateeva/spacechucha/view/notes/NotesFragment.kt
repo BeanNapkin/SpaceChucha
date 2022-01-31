@@ -1,4 +1,4 @@
-package pro.fateeva.spacechucha.view
+package pro.fateeva.spacechucha.view.notes
 
 import android.os.Bundle
 import android.view.*
@@ -6,10 +6,9 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import pro.fateeva.spacechucha.DiffUtilCallback
-import pro.fateeva.spacechucha.MyCallback
-import pro.fateeva.spacechucha.NotesRecyclerAdapter
+import kotlinx.android.synthetic.main.notes_fragment.*
 import pro.fateeva.spacechucha.databinding.NotesFragmentBinding
 import pro.fateeva.spacechucha.repository.Note
 import pro.fateeva.spacechucha.viewmodel.NotesViewModel
@@ -20,7 +19,7 @@ import java.util.*
 const val TYPE_ASTRONOMY = 0
 const val TYPE_SPACE = 1
 
-class NotesFragment : Fragment() {
+class NotesFragment : Fragment(), ItemTouchCallback {
 
     private var _binding: NotesFragmentBinding? = null
     val binding: NotesFragmentBinding
@@ -77,6 +76,8 @@ class NotesFragment : Fragment() {
 
         binding.recyclerView.adapter = adapter
 
+        ItemTouchHelper(ItemTouchHelperCallback(this)).attachToRecyclerView(recyclerView)
+
         viewModel.getNoteListLiveData().observe(viewLifecycleOwner) {
             val diffUtilCallback = DiffUtilCallback(adapter.notesList, it)
             val noteDiffResult = DiffUtil.calculateDiff(diffUtilCallback)
@@ -132,5 +133,13 @@ class NotesFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() = NotesFragment()
+    }
+
+    override fun onItemMove(fromPosition: Int, toPosition: Int) {
+       viewModel.moveNote(fromPosition, toPosition)
+    }
+
+    override fun onItemDismiss(position: Int) {
+        viewModel.deleteNote(position)
     }
 }
