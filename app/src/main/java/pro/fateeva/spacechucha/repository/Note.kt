@@ -7,5 +7,6 @@ data class Note(
     val id: Int,
     val type: Int,
     var date: String,
-    var text: String
+    var text: String,
+    val isFavourite: Boolean = false
 )

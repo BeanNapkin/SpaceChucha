@@ -22,6 +22,7 @@ import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.MARS
 import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.MOON
 import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.THEME
 import pro.fateeva.spacechucha.view.ThemesDialogFragment.Companion.THEME_NAME
+import pro.fateeva.spacechucha.view.notes.NotesFragment
 import pro.fateeva.spacechucha.viewmodel.MainActivityViewModel
 import java.text.SimpleDateFormat
 import java.util.*
