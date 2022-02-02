@@ -92,6 +92,11 @@ class NotesFragment : Fragment(), ItemTouchCallback {
             adapter.notesList = it
             noteDiffResult.dispatchUpdatesTo(adapter)
         }
+
+        binding.searchTextInputLayout.setEndIconOnClickListener {
+            val text = inputEditText.text.toString()
+            viewModel.searchNotesByText(text)
+        }
     }
 
     fun showNoteDialog(note: Note? = null, noteType: Int) {
