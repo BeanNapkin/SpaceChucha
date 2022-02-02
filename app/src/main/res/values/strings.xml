@@ -26,4 +26,5 @@
     <string name="space_note">Космическая заметка</string>
     <string name="astronomy_note">Звёздная заметка</string>
     <string name="search_in_notes">Поиск по заметкам</string>
+    <string name="only_favourites">Только избранные</string>
 </resources>

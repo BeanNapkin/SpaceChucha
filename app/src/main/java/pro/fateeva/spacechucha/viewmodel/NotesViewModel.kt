@@ -3,6 +3,7 @@ package pro.fateeva.spacechucha.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import okhttp3.internal.filterList
 import pro.fateeva.spacechucha.repository.*
 
 class NotesViewModel(
@@ -12,6 +13,7 @@ class NotesViewModel(
     private val mutableLiveData: MutableLiveData<List<Note>> = MutableLiveData()
     val liveData: LiveData<List<Note>> = mutableLiveData
     private var filterString = ""
+    private var isFavouriteChecked = false
 
     fun saveNote(note: Note) {
         notesRepository.addNote(note)
@@ -48,6 +50,16 @@ class NotesViewModel(
     }
 
     private fun filterList() {
-        mutableLiveData.value = getNotes().filter { it.text.contains(filterString, ignoreCase = true) }
+        var notes = getNotes().filter { it.text.contains(filterString, ignoreCase = true) }
+
+        if (isFavouriteChecked){
+            notes = notes.filter { it.isFavourite }
+        }
+        mutableLiveData.value = notes
+    }
+
+    fun filterByFavourites() {
+        isFavouriteChecked = !isFavouriteChecked
+        filterList()
     }
 }

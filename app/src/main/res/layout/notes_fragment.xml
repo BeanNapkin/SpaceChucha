@@ -27,6 +27,16 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.chip.Chip
+        android:id="@+id/favouriteFilterChip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        style="@style/Widget.MaterialComponents.Chip.Choice"
+        android:text="@string/only_favourites"
+        app:layout_constraintTop_toBottomOf="@id/searchTextInputLayout"
+        app:layout_constraintStart_toStartOf="@id/searchTextInputLayout" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
@@ -34,7 +44,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchTextInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/favouriteFilterChip"
         tools:listitem="@layout/space_note_item" />
 
     <FrameLayout

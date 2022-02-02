@@ -97,6 +97,11 @@ class NotesFragment : Fragment(), ItemTouchCallback {
             val text = inputEditText.text.toString()
             viewModel.searchNotesByText(text)
         }
+
+        binding.favouriteFilterChip.setOnCheckedChangeListener { favouriteFilterChip, isChecked ->
+            viewModel.filterByFavourites()
+        }
+
     }
 
     fun showNoteDialog(note: Note? = null, noteType: Int) {
