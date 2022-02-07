@@ -1,12 +1,15 @@
 package pro.fateeva.spacechucha.view
 
 import android.content.Intent
+import android.content.res.loader.ResourcesProvider
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.transition.Slide
 import android.transition.TransitionManager
 import android.util.Log
 import android.view.*
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -158,6 +161,9 @@ class PictureOfTheDayFragment : Fragment() {
                 binding.bottomSheetDescription.header.text = state.data.title
                 binding.bottomSheetDescription.description.text =
                     state.data.explanation
+
+                binding.bottomSheetDescription.header.typeface = Typeface.createFromAsset(requireActivity().assets, "Troubleside.ttf")
+                binding.bottomSheetDescription.description.typeface = ResourcesCompat.getFont(requireContext(), R.font.snippet)
             }
         }
     }
