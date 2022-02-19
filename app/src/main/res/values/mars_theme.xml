@@ -19,7 +19,7 @@
     </style>
 
     <style name="H1Mars">
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textColor">@color/colorDarkGrey</item>
     </style>
 
     <style name="FloatingButtonMars" parent="Widget.MaterialComponents.FloatingActionButton">
