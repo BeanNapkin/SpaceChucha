@@ -146,10 +146,9 @@ class PictureOfTheDayFragment : Fragment() {
             is LoadableData.Error -> {
                 binding.progressBar.visibility = View.GONE
                 Log.e(null, "Ошибка при скачке изображения", state.error)
-                Snackbar.make(binding.root, "Нет данных для этой даты", 10000)
-                    .show()
-                binding.imageView.setImageDrawable(resources.getDrawable(R.drawable.ic_no_image, requireContext().theme))
-                binding.bottomSheetDescription.header.text = ""
+                binding.pictureOfTheDayErrorTextView.visibility = View.VISIBLE
+                binding.imageView.visibility = View.INVISIBLE
+                binding.bottomSheetDescription.header.text = "Нет данных для этой даты"
                 binding.bottomSheetDescription.description.text = ""
             }
             is LoadableData.Loading -> {
@@ -157,6 +156,8 @@ class PictureOfTheDayFragment : Fragment() {
             }
             is LoadableData.Success -> {
                 binding.progressBar.visibility = View.GONE
+                binding.imageView.visibility = View.VISIBLE
+                binding.pictureOfTheDayErrorTextView.visibility = View.INVISIBLE
                 val pictureOfTheDayResponseData = state.data
                 val url = pictureOfTheDayResponseData.url
 

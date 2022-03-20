@@ -72,11 +72,8 @@ class MarsFragment : Fragment() {
             is LoadableData.Error -> {
                 binding.progressBar.visibility = View.GONE
                 Log.e("ImageLoading", "Ошибка при скачке изображения", state.error)
-                Snackbar.make(binding.root, "error ", Snackbar.LENGTH_SHORT)
-                    .setAction("Retry") {
-                        refresh(date)
-                    }
-                    .show()
+                binding.marsImageView.visibility = View.INVISIBLE
+                binding.marsImageErrorTextView.visibility = View.VISIBLE
             }
             is LoadableData.Loading -> {
                 binding.progressBar.visibility = View.VISIBLE
@@ -84,10 +81,11 @@ class MarsFragment : Fragment() {
             is LoadableData.Success -> {
                 val marsPhotosServerResponseData = state.data.photos
                 if (marsPhotosServerResponseData.isEmpty()) {
-                    binding.marsImageView.setImageDrawable(resources.getDrawable(R.drawable.ic_no_image, requireContext().theme))
-                    Snackbar.make(binding.root, "Нет фото для этой даты", 10000)
-                        .show()
+                    binding.marsImageView.visibility = View.INVISIBLE
+                    binding.marsImageErrorTextView.visibility = View.VISIBLE
                 } else {
+                    binding.marsImageView.visibility = View.VISIBLE
+                    binding.marsImageErrorTextView.visibility = View.INVISIBLE
                     val image = marsPhotosServerResponseData.last().image
                     binding.marsImageView.load(image) {
                         lifecycle(this@MarsFragment)
