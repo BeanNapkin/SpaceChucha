@@ -1,5 +1,6 @@
 package pro.fateeva.spacechucha.view
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.facts_fragment.*
 import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.FactsFragmentBinding
 import pro.fateeva.spacechucha.databinding.MarsFragmentBinding
@@ -24,6 +26,7 @@ import pro.fateeva.spacechucha.viewmodel.LoadableData
 import pro.fateeva.spacechucha.viewmodel.MarsViewModel
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlinx.android.synthetic.main.facts_fragment.fabImageView as fabImageView1
 
 class FactsFragment : DialogFragment() {
 
@@ -62,6 +65,10 @@ class FactsFragment : DialogFragment() {
         binding.factTextView.setText(factsList[factNumber])
 
         binding.fab.setOnClickListener {
+            ObjectAnimator.ofFloat(binding.fabImageView,"rotation", -315f, 0f).setDuration(500).start()
+            ObjectAnimator.ofFloat(binding.fab, "scaleX", 1.2f, 1f).setDuration(500).start()
+            ObjectAnimator.ofFloat(binding.fab, "scaleY", 1.2f, 1f).setDuration(500).start()
+            
             if (factNumber == factsList.size - 1) {
                 factNumber = 0
             } else {

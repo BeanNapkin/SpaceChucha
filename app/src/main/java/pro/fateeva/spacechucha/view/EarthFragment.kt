@@ -1,21 +1,29 @@
 package pro.fateeva.spacechucha.view
 
 import android.os.Bundle
+import android.transition.Slide
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.transition.*
 import coil.load
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.earth_fragment.*
+import kotlinx.android.synthetic.main.earth_fragment.main
+import kotlinx.android.synthetic.main.picture_of_the_day_fragment.*
 import pro.fateeva.spacechucha.BuildConfig
 import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.EarthFragmentBinding
 import pro.fateeva.spacechucha.repository.AsteroidsResponseData
 import pro.fateeva.spacechucha.repository.EarthEpicServerResponseData
+import pro.fateeva.spacechucha.utils.fadeInOnLoad
 import pro.fateeva.spacechucha.viewmodel.EarthViewModel
 import pro.fateeva.spacechucha.viewmodel.LoadableData
 import java.text.SimpleDateFormat
@@ -24,6 +32,7 @@ import java.util.*
 class EarthFragment : Fragment() {
 
     lateinit var date: String
+    private var isExpanded = false
 
     private var _binding: EarthFragmentBinding? = null
     val binding: EarthFragmentBinding
@@ -64,6 +73,28 @@ class EarthFragment : Fragment() {
             refresh(it)
         })
 
+        initImageViewExpanding()
+    }
+
+    private fun initImageViewExpanding() {
+        binding.earthImageView.setOnClickListener {
+            binding.earthExpandedImageView.setImageDrawable(binding.earthImageView.drawable)
+
+            val transition = AutoTransition()
+            transition.duration = 200
+            TransitionManager.beginDelayedTransition(main, transition)
+            binding.earthImageGroup.visibility = View.GONE
+            binding.earthExpandedImageView.visibility = View.VISIBLE
+
+        }
+
+        binding.earthExpandedImageView.setOnClickListener {
+            val transition = AutoTransition()
+            transition.duration = 200
+            TransitionManager.beginDelayedTransition(main, transition)
+            binding.earthExpandedImageView.visibility = View.GONE
+            binding.earthImageGroup.visibility = View.VISIBLE
+        }
     }
 
     private fun renderEpicData(state: LoadableData<EarthEpicServerResponseData>) {
@@ -71,10 +102,8 @@ class EarthFragment : Fragment() {
             is LoadableData.Error -> {
                 binding.progressBar.visibility = View.GONE
                 Log.e("ImageLoading", "Ошибка при скачке изображения", state.error)
-                Snackbar.make(binding.root, "error ", Snackbar.LENGTH_SHORT)
-                    .setAction("Retry") {
-                        refresh(date)
-                    }
+                binding.earthImageView.setImageDrawable(resources.getDrawable(R.drawable.ic_no_image, requireContext().theme))
+                Snackbar.make(binding.root, "Нет фото для этой даты", 10000)
                     .show()
             }
             is LoadableData.Loading -> {
@@ -85,21 +114,22 @@ class EarthFragment : Fragment() {
                 val date = earthEpicResponseData.date.split(" ").first()
                 val image = earthEpicResponseData.image
                 val url = "https://api.nasa.gov/EPIC/archive/natural/" +
-                        date.replace("-","/",true) +
+                        date.replace("-", "/", true) +
                         "/png/" +
                         "$image" +
                         ".png?api_key=${BuildConfig.NASA_API_KEY}"
                 binding.earthImageView.load(url) {
                     lifecycle(this@EarthFragment)
+                    fadeInOnLoad(binding.earthImageView)
                     error(R.drawable.ic_baseline_error)
-                    placeholder(R.drawable.ic_no_image)
                 }
                 binding.progressBar.visibility = View.GONE
             }
         }
     }
 
-    private fun renderAsteroidsData(state: LoadableData<AsteroidsResponseData>){
+
+    private fun renderAsteroidsData(state: LoadableData<AsteroidsResponseData>) {
         when (state) {
             is LoadableData.Error -> {
                 binding.progressBar.visibility = View.GONE

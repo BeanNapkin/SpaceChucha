@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
-        app:layoutDescription="@xml/motion_scene">
+        android:padding="10dp">
+<!--        app:layoutDescription="@xml/motion_scene">-->
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/wikiButton"
@@ -18,10 +18,9 @@
             android:layout_height="40dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/inputLayout"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/inputLayout"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/wiki" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -30,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/search_wiki"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:counterEnabled="true"
             app:counterMaxLength="20"
             app:endIconCheckable="true"
@@ -87,8 +86,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_no_image" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/videoOfTheDay"
@@ -99,7 +97,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputLayout" />
 
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>>
 
     <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
     <!--        android:id="@+id/fab"-->

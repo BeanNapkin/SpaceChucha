@@ -61,7 +61,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:src="@drawable/ic_baseline_navigate_next_24"
         app:layout_anchor="@id/main_appbar"
         app:layout_anchorGravity="bottom|end" />
+
+    <ImageView
+        android:id="@+id/fabImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/fab"
+        app:layout_anchorGravity="center"
+        android:layout_margin="10dp"
+        android:elevation="10dp"
+        app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

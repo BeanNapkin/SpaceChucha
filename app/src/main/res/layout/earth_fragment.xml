@@ -2,7 +2,8 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tool="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
@@ -10,13 +11,28 @@
         android:layout_height="match_parent"
         android:padding="10dp">
 
-        <pro.fateeva.spacechucha.utils.CustomImageView
+        <ImageView
             android:id="@+id/earthImageView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_no_image" />
+            app:srcCompat="@drawable/ic_no_image"
+            android:scaleType="fitCenter"
+            app:layout_constraintDimensionRatio="H, 1:1"
+            tool:srcCompat="@drawable/sheldon"/>
+
+        <ImageView
+            android:id="@+id/earthExpandedImageView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:srcCompat="@drawable/ic_no_image"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            tool:srcCompat="@drawable/sheldon"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textView"
@@ -34,6 +50,12 @@
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toEndOf="@id/textView"
             app:layout_constraintTop_toBottomOf="@id/earthImageView" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/earthImageGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="textView,countAsteroidsTextView,earthImageView"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

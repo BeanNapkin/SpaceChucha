@@ -3,23 +3,29 @@ package pro.fateeva.spacechucha.view
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.transition.Slide
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
+import coil.request.ImageRequest
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.description_bottomsheet_fragment.view.*
 import kotlinx.android.synthetic.main.picture_of_the_day_fragment.*
 import pro.fateeva.spacechucha.R
 import pro.fateeva.spacechucha.databinding.PictureOfTheDayFragmentBinding
 import pro.fateeva.spacechucha.repository.PictureOfTheDayResponseData
+import pro.fateeva.spacechucha.utils.fadeInOnLoad
 import pro.fateeva.spacechucha.viewmodel.LoadableData
 import pro.fateeva.spacechucha.viewmodel.PictureOfTheDayViewModel
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 private const val IMAGE = "image"
 
@@ -129,11 +135,11 @@ class PictureOfTheDayFragment : Fragment() {
             is LoadableData.Error -> {
                 binding.progressBar.visibility = View.GONE
                 Log.e(null, "Ошибка при скачке изображения", state.error)
-                Snackbar.make(binding.root, "error ", Snackbar.LENGTH_SHORT)
-                    .setAction("Retry") {
-                        refresh(takeDate(0))
-                    }
+                Snackbar.make(binding.root, "Нет данных для этой даты", 10000)
                     .show()
+                binding.imageView.setImageDrawable(resources.getDrawable(R.drawable.ic_no_image, requireContext().theme))
+                binding.bottomSheetDescription.header.text = ""
+                binding.bottomSheetDescription.description.text = ""
             }
             is LoadableData.Loading -> {
                 binding.progressBar.visibility = View.VISIBLE
@@ -161,8 +167,9 @@ class PictureOfTheDayFragment : Fragment() {
         binding.videoOfTheDay.visibility = View.GONE
         binding.imageView.load(url) {
             lifecycle(this@PictureOfTheDayFragment)
+            fadeInOnLoad(binding.imageView)
             error(R.drawable.ic_baseline_error)
-            placeholder(R.drawable.ic_no_image)
+//            placeholder(R.drawable.ic_no_image)
         }
     }
 
@@ -196,6 +203,14 @@ class PictureOfTheDayFragment : Fragment() {
     }
 
     private fun addWikiSearch() {
+        binding.wikiButton.setOnClickListener {
+            binding.wikiButton.visibility = View.GONE
+            val transition = Slide(Gravity.END)
+            transition.duration = 1000
+            TransitionManager.beginDelayedTransition(main, transition)
+            binding.inputLayout.visibility = View.VISIBLE
+        }
+
         inputLayout.setEndIconOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse("https://en.wikipedia.org/wiki/${inputEditText.text.toString()}")
@@ -209,3 +224,4 @@ class PictureOfTheDayFragment : Fragment() {
         fun newInstance() = PictureOfTheDayFragment()
     }
 }
+
