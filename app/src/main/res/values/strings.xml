@@ -22,4 +22,9 @@
     <string name="newear_moon_photo">Самое свежее фото Луны</string>
     <string name="fun_facts">Занимательные факты</string>
     <string name="fun">Fun</string>
+    <string name="notes">Заметки</string>
+    <string name="space_note">Космическая заметка</string>
+    <string name="astronomy_note">Звёздная заметка</string>
+    <string name="search_in_notes">Поиск по заметкам</string>
+    <string name="only_favourites">Только избранные</string>
 </resources>
