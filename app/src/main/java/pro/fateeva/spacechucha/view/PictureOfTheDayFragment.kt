@@ -75,7 +75,10 @@ class PictureOfTheDayFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.favourite -> Toast.makeText(context, "Favourite", Toast.LENGTH_SHORT).show()
-            R.id.settings -> Toast.makeText(context, "Settings", Toast.LENGTH_SHORT).show()
+            R.id.settings -> requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.container, SettingsFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
             android.R.id.home -> {
                 activity?.let {
                     BottomDrawerFragment().show(it.supportFragmentManager, "tag")

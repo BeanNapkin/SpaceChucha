@@ -46,21 +46,21 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Сегодня" />
+                android:text="@string/today" />
 
             <com.google.android.material.chip.Chip
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/yesterday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Вчера" />
+                android:text="@string/yesterday" />
 
             <com.google.android.material.chip.Chip
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:id="@+id/dayBeforeYesterday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Позавчера" />
+                android:text="@string/day_before_yesterday" />
         </com.google.android.material.chip.ChipGroup>
 
         <pro.fateeva.spacechucha.utils.CustomImageView
@@ -81,10 +81,8 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorAccent"
         app:layout_anchor="@id/bottomAppBar"
-        app:srcCompat="@drawable/ic_fab_add"
-        app:tint="#FFFFFF" />
+        app:srcCompat="@drawable/ic_fab_add" />
 
     <include layout="@layout/description_bottomsheet_fragment"
         android:id="@+id/bottomSheetDescription" />
@@ -94,7 +92,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:backgroundTint="@color/colorPrimary"
         app:fabAlignmentMode="center"
         app:navigationIcon="@drawable/ic_menu_hamburger" />
 
