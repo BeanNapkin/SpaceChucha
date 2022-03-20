@@ -1,12 +1,23 @@
 package pro.fateeva.spacechucha.view
 
 import android.content.Intent
+import android.content.res.loader.ResourcesProvider
+import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.QuoteSpan
+import android.text.style.StyleSpan
+import android.text.style.TypefaceSpan
 import android.transition.Slide
 import android.transition.TransitionManager
 import android.util.Log
 import android.view.*
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -158,6 +169,26 @@ class PictureOfTheDayFragment : Fragment() {
                 binding.bottomSheetDescription.header.text = state.data.title
                 binding.bottomSheetDescription.description.text =
                     state.data.explanation
+
+                binding.bottomSheetDescription.header.typeface = Typeface.createFromAsset(requireActivity().assets, "Troubleside.ttf")
+                binding.bottomSheetDescription.description.typeface = ResourcesCompat.getFont(requireContext(), R.font.snippet)
+
+                val spannableString = SpannableString(binding.bottomSheetDescription.description.text)
+                val color = ContextCompat.getColor(requireContext(), R.color.colorRed)
+                val stripeWidthInPx = 20
+                val gapWidthInPx = 50
+                val fontSizeForFirstLetter = 120
+                val typeface = ResourcesCompat.getFont(requireContext(), R.font.diplomata)
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+                    spannableString.setSpan(QuoteSpan(color), 0, spannableString.length, 0)
+                    spannableString.setSpan(QuoteSpan(color, stripeWidthInPx, gapWidthInPx), 0, spannableString.length, 0)
+                    spannableString.setSpan(AbsoluteSizeSpan(fontSizeForFirstLetter), 0, 1, 0)
+                    spannableString.setSpan(StyleSpan(Typeface.BOLD), 0, 1, 0)
+                    spannableString.setSpan(TypefaceSpan(typeface!!), 0, 1, 0)
+                }
+
+                binding.bottomSheetDescription.description.text = spannableString
             }
         }
     }
