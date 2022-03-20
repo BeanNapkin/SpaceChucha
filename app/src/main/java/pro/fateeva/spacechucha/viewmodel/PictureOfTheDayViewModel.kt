@@ -1,31 +1,31 @@
 package pro.fateeva.spacechucha.viewmodel
 
-import android.telecom.RemoteConnection
-import android.view.InputQueue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import pro.fateeva.spacechucha.BuildConfig
+import pro.fateeva.spacechucha.repository.CurrentDateRepository
+import pro.fateeva.spacechucha.repository.CurrentDateRepositoryImpl
 import pro.fateeva.spacechucha.repository.PictureOfTheDayResponseData
-import pro.fateeva.spacechucha.repository.PictureOfTheDayRetrofitImpl
+import pro.fateeva.spacechucha.repository.RetrofitImpl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class PictureOfTheDayViewModel (
-    private val liveDataForViewToObserve: MutableLiveData<PictureOfTheDayState> = MutableLiveData(),
-    private val retrofitImpl: PictureOfTheDayRetrofitImpl = PictureOfTheDayRetrofitImpl()
+    private val liveDataForViewToObserve: MutableLiveData<LoadableData<PictureOfTheDayResponseData>> = MutableLiveData(),
+    private val retrofitImpl: RetrofitImpl = RetrofitImpl(),
+    private val currentDateRepository: CurrentDateRepository = CurrentDateRepositoryImpl
 ) : ViewModel() {
 
-    fun getData(): LiveData<PictureOfTheDayState> {
-        return liveDataForViewToObserve
-    }
+    fun getData() = liveDataForViewToObserve
+    fun getCurrentDateData() = currentDateRepository.currentDate
 
     fun getImageOfTheDay(date: String) {
-        liveDataForViewToObserve.value = PictureOfTheDayState.Loading(0)
+        liveDataForViewToObserve.value = LoadableData.Loading(0)
         val apiKey: String = BuildConfig.NASA_API_KEY
         if (apiKey.isBlank()) {
-            liveDataForViewToObserve.value = PictureOfTheDayState.Error(Throwable("wrong key"))
+            liveDataForViewToObserve.value = LoadableData.Error(Throwable("wrong key"))
         } else {
             retrofitImpl.getRetrofitImpl().getPictureOfTheDay(apiKey, date).enqueue(callback)
         }
@@ -37,14 +37,14 @@ class PictureOfTheDayViewModel (
             response: Response<PictureOfTheDayResponseData>
         ) {
             if (response.isSuccessful && response.body() != null) {
-                liveDataForViewToObserve.value = PictureOfTheDayState.Success(response.body()!!)
+                liveDataForViewToObserve.value = LoadableData.Success(response.body()!!)
             } else {
-                liveDataForViewToObserve.value = PictureOfTheDayState.Error(Throwable("response is not success or body is null"))
+                liveDataForViewToObserve.value = LoadableData.Error(Throwable("response is not success or body is null"))
             }
         }
 
         override fun onFailure(call: Call<PictureOfTheDayResponseData>, t: Throwable) {
-            liveDataForViewToObserve.value = PictureOfTheDayState.Error(Throwable("response is failure: " + t.message))
+            liveDataForViewToObserve.value = LoadableData.Error(Throwable("response is failure: " + t.message))
         }
     }
 }

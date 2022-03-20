@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar"/>
     <style name="MoonTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorLightBlue</item>
@@ -11,6 +12,7 @@
         <item name="floatingActionButtonStyle">@style/FloatingButtonMoon</item>
         <item name="fontFamily">@font/zarubka</item>
         <item name="android:fontFamily">@font/zarubka</item>
+        <item name="bottomNavigationStyle">@style/BottomNavigationMoon</item>
     </style>
 
     <style name="H1Moon">
@@ -19,6 +21,10 @@
 
     <style name="FloatingButtonMoon" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="tint">@color/colorBlack</item>
+    </style>
+
+    <style name="BottomNavigationMoon" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="itemIconTint">@color/bottom_navigation_moon</item>
     </style>
 
 </resources>
