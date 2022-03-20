@@ -3,6 +3,7 @@ package pro.fateeva.spacechucha
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
 import android.os.PersistableBundle
 import android.util.AttributeSet
 import android.view.Menu
@@ -30,6 +31,10 @@ import java.util.*
 private const val NUM_PAGES = 5
 
 class MainActivity : AppCompatActivity() {
+
+    private val handler:Handler by lazy {
+        Handler(mainLooper)
+    }
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var pager: ViewPager
@@ -61,8 +66,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
 
+
+        handler.postDelayed(::start ,2000)
+
         setContentView(view)
 
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.splashContainer, SplashFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun start(){
+        supportFragmentManager.popBackStack()
         pager = binding.pager
         pager.setPageTransformer(true, ZoomOutPageTransformer())
         val pagerAdapter = PagerAdapter(supportFragmentManager, fragmentsList)

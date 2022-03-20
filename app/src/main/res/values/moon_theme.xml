@@ -16,7 +16,7 @@
     </style>
 
     <style name="H1Moon">
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textColor">@color/colorDarkGrey</item>
     </style>
 
     <style name="FloatingButtonMoon" parent="Widget.MaterialComponents.FloatingActionButton">
