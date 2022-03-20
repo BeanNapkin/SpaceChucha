@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/fun"
+        android:title="@string/fun"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/fun"/>
+
+    <item
         android:id="@+id/chooseDate"
         android:title="@string/change_date"
         app:showAsAction="ifRoom" />

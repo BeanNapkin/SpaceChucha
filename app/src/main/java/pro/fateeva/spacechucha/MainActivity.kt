@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         binding.appBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.chooseDate -> showDatePicker()
+                R.id.`fun` -> FactsFragment.newInstance().show(supportFragmentManager, null)
             }
             true
         }
